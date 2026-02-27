@@ -1,45 +1,61 @@
 <!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>School News Board</title>
+    <title>School Board</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
-        .news-container { max-width: 500px; margin: auto; text-align: left; }
-        .card { background: white; padding: 20px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1a73e8; }
-        h1 { color: #1a73e8; }
-        h3 { margin: 0; color: #d93025; }
-        .author { font-size: 0.8em; color: gray; margin-top: 10px; border-top: 1px solid #eee; padding-top: 5px; }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .post-form { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: 0 auto 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background: #1877f2; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
+        .news-card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 5px solid #1877f2; max-width: 500px; margin-left: auto; margin-right: auto; }
     </style>
 </head>
 <body>
-    <h1>📢 ข่าวสารในโรงเรียน</h1>
-    <div id="display" class="news-container">กำลังดึงข้อมูลข่าว...</div>
+
+    <div class="post-form">
+        <h3>➕ เขียนข่าวใหม่</h3>
+        <input type="text" id="title" placeholder="หัวข้อข่าว">
+        <textarea id="content" placeholder="เนื้อหาข่าว..."></textarea>
+        <input type="text" id="author" placeholder="ชื่อของคุณ">
+        <button onclick="sendData()">โพสต์ข่าว</button>
+    </div>
+
+    <hr>
+
+    <div id="news-container">กำลังโหลดข่าว...</div>
 
     <script>
-        const url = 'https://script.google.com/macros/s/AKfycbzEcxi976KXQ3WIJ6SItn08OyCOKU2IF1pRtdyGXOJ0Rg6vpuFBjRZxlNOwAobHBm-caw/exec'; 
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycby7UKaaUulsL8a2FUAx5-IJNttMzB1x8ICgac4432NkdlVwt_CCl8DGTj9_z_wi1QWsRw/exec';
 
-        async function getNews() {
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                let htmlContent = '';
-                
-                data.reverse().forEach(item => {
-                    htmlContent += `
-                        <div class="card">
-                            <h3>${item.title || 'ไม่มีหัวข้อ'}</h3>
-                            <p>${item.content || ''}</p>
-                            <div class="author">โดย: ${item.author || 'ไม่ระบุ'} | ${item.date || ''}</div>
-                        </div>
-                    `;
-                });
-                document.getElementById('display').innerHTML = htmlContent;
-            } catch (e) {
-                document.getElementById('display').innerHTML = "เชื่อมต่อข้อมูลไม่ได้ ตรวจสอบการแชร์ Google Sheets";
-            }
+        // ฟังก์ชันสำหรับ "ส่ง" ข้อมูลไปที่ Sheets
+        async function sendData() {
+            const data = {
+                title: document.getElementById('title').value,
+                content: document.getElementById('content').value,
+                author: document.getElementById('author').value
+            };
+
+            await fetch(scriptUrl, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+
+            alert('โพสต์เรียบร้อย!');
+            location.reload(); // รีเฟรชหน้าเพื่อดูข่าวใหม่
         }
-        getNews();
+
+        // ฟังก์ชันสำหรับ "ดึง" ข่าวมาโชว์
+        async function loadNews() {
+            const response = await fetch(scriptUrl);
+            const data = await response.json();
+            let html = '';
+            data.reverse().forEach(item => {
+                html += `<div class="news-card"><h4>${item.title}</h4><p>${item.content}</p><small>โดย ${item.author}</small></div>`;
+            });
+            document.getElementById('news-container').innerHTML = html;
+        }
+        loadNews();
     </script>
 </body>
 </html>
