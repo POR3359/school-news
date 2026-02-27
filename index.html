@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>School News Board</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; text-align: center; }
+        .news-container { max-width: 500px; margin: auto; text-align: left; }
+        .card { background: white; padding: 20px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1a73e8; }
+        h1 { color: #1a73e8; }
+        h3 { margin: 0; color: #d93025; }
+        .author { font-size: 0.8em; color: gray; margin-top: 10px; border-top: 1px solid #eee; padding-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>📢 ข่าวสารในโรงเรียน</h1>
+    <div id="display" class="news-container">กำลังดึงข้อมูลข่าว...</div>
+
+    <script>
+        const url = 'https://script.google.com/macros/s/AKfycbzEcxi976KXQ3WIJ6SItn08OyCOKU2IF1pRtdyGXOJ0Rg6vpuFBjRZxlNOwAobHBm-caw/exec'; 
+
+        async function getNews() {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                let htmlContent = '';
+                
+                data.reverse().forEach(item => {
+                    htmlContent += `
+                        <div class="card">
+                            <h3>${item.title || 'ไม่มีหัวข้อ'}</h3>
+                            <p>${item.content || ''}</p>
+                            <div class="author">โดย: ${item.author || 'ไม่ระบุ'} | ${item.date || ''}</div>
+                        </div>
+                    `;
+                });
+                document.getElementById('display').innerHTML = htmlContent;
+            } catch (e) {
+                document.getElementById('display').innerHTML = "เชื่อมต่อข้อมูลไม่ได้ ตรวจสอบการแชร์ Google Sheets";
+            }
+        }
+        getNews();
+    </script>
+</body>
+</html>
