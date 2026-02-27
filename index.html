@@ -1,61 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>School Board</title>
+    <title>School Board Lite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
-        .post-form { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: 0 auto 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        input, textarea { width: 100%; padding: 10px; margin: 5px 0 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { background: #1877f2; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
-        .news-card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 5px solid #1877f2; max-width: 500px; margin-left: auto; margin-right: auto; }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .box { background: white; padding: 20px; border-radius: 10px; width: 100%; max-width: 450px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; background: #1877f2; color: white; }
+        .news-card { background: white; padding: 15px; border-radius: 10px; width: 100%; max-width: 480px; margin-bottom: 10px; position: relative; border-left: 5px solid #1877f2; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .btn-delete { position: absolute; top: 10px; right: 10px; color: #ff4757; cursor: pointer; border:none; background:none; font-size: 1.1em; }
+        .comment-item { font-size: 0.85em; border-top: 1px solid #eee; margin-top: 5px; padding-top: 5px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="post-form">
-        <h3>➕ เขียนข่าวใหม่</h3>
-        <input type="text" id="title" placeholder="หัวข้อข่าว">
-        <textarea id="content" placeholder="เนื้อหาข่าว..."></textarea>
+    <div class="box">
+        <h3>📢 ประกาศข่าวสาร</h3>
         <input type="text" id="author" placeholder="ชื่อของคุณ">
-        <button onclick="sendData()">โพสต์ข่าว</button>
+        <input type="text" id="title" placeholder="หัวข้อข่าว">
+        <textarea id="content" placeholder="รายละเอียด..."></textarea>
+        <button onclick="sendPost()">โพสต์เลย</button>
     </div>
 
-    <hr>
-
-    <div id="news-container">กำลังโหลดข่าว...</div>
+    <div id="news-container" style="width:100%; max-width:480px;">กำลังโหลด...</div>
 
     <script>
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycby7UKaaUulsL8a2FUAx5-IJNttMzB1x8ICgac4432NkdlVwt_CCl8DGTj9_z_wi1QWsRw/exec';
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbySLYYCag8Rjh2nuzBDxMVpH88bSEbPf_jlP-Dgnr2GsZRkV7kHdzMrpOFo21eHeu41Lw/exec';
 
-        // ฟังก์ชันสำหรับ "ส่ง" ข้อมูลไปที่ Sheets
-        async function sendData() {
-            const data = {
-                title: document.getElementById('title').value,
-                content: document.getElementById('content').value,
-                author: document.getElementById('author').value
-            };
+        // จำชื่อผู้ใช้ไว้ในเครื่อง
+        window.onload = () => {
+            if(localStorage.getItem("myName")) document.getElementById('author').value = localStorage.getItem("myName");
+            loadNews();
+        };
 
-            await fetch(scriptUrl, {
-                method: 'POST',
-                body: JSON.stringify(data)
-            });
-
-            alert('โพสต์เรียบร้อย!');
-            location.reload(); // รีเฟรชหน้าเพื่อดูข่าวใหม่
+        async function sendPost() {
+            const author = document.getElementById('author').value;
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            if(!author || !title) return alert("กรุณากรอกชื่อและหัวข้อ");
+            
+            localStorage.setItem("myName", author); // จำชื่อไว้ใช้ครั้งหน้า
+            
+            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, username: author }) });
+            location.reload(); // รีเฟรชหน้าเพื่ออัปเดตข้อมูลแบบเบสิกที่สุด
         }
 
-        // ฟังก์ชันสำหรับ "ดึง" ข่าวมาโชว์
         async function loadNews() {
             const response = await fetch(scriptUrl);
             const data = await response.json();
             let html = '';
             data.reverse().forEach(item => {
-                html += `<div class="news-card"><h4>${item.title}</h4><p>${item.content}</p><small>โดย ${item.author}</small></div>`;
+                let comments = item.comments.map(c => `<div class="comment-item"><b>${c.commenter}:</b> ${c.text}</div>`).join('');
+                // ปุ่มลบจะขึ้นถ้าชื่อตรงกับคนโพสต์
+                let delBtn = (item.username === localStorage.getItem("myName")) ? `<button class="btn-delete" onclick="deletePost('${item.title}')"><i class="fas fa-trash-alt"></i></button>` : '';
+                
+                html += `
+                    <div class="news-card">
+                        ${delBtn}
+                        <b style="font-size:1.1em;">${item.title}</b>
+                        <p style="margin:5px 0;">${item.content}</p>
+                        <small style="color:gray;">โดย ${item.author}</small>
+                        <div style="margin-top:10px;">
+                            ${comments}
+                            <button style="background:none; color:#1877f2; width:auto; padding:0; font-size:0.8em;" onclick="sendComment('${item.title}')">+ ตอบกลับ</button>
+                        </div>
+                    </div>`;
             });
             document.getElementById('news-container').innerHTML = html;
         }
-        loadNews();
+
+        async function deletePost(title) {
+            if(!confirm("ลบโพสต์นี้ใช่ไหม?")) return;
+            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, username: localStorage.getItem("myName") }) });
+            location.reload();
+        }
+
+        async function sendComment(title) {
+            const text = prompt("เขียนตอบกลับ:");
+            if(!text) return;
+            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'comment', title, commenter: localStorage.getItem("myName"), text }) });
+            location.reload();
+        }
     </script>
 </body>
 </html>
