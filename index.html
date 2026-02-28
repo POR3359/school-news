@@ -3,65 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Board Ultimate V.5.2</title>
+    <title>School Board Ultimate V.5.5</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        /* ตัวแปรสีพื้นฐาน (โหมดสว่าง) */
         :root { 
-            --primary: #1877f2; 
-            --bg: #f0f2f5; 
-            --sidebar: #1a202c; 
-            --card-bg: #ffffff;
-            --text-main: #1a202c;
-            --text-sub: #64748b;
-            --border: #e2e8f0;
+            --primary: #1877f2; --bg: #f0f2f5; --sidebar: #1a202c; --card-bg: #ffffff;
+            --text-main: #1a202c; --text-sub: #64748b; --border: #e2e8f0;
         }
 
-        /* ตัวแปรสีสำหรับ Dark Mode */
         body.dark-mode {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f1f5f9;
-            --text-sub: #94a3b8;
-            --border: #334155;
+            --bg: #0f172a; --card-bg: #1e293b; --text-main: #f1f5f9;
+            --text-sub: #94a3b8; --border: #334155;
         }
 
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; display: flex; min-height: 100vh; transition: 0.3s; color: var(--text-main); }
         
         /* Sidebar */
         .sidebar { width: 280px; background: var(--sidebar); color: #fff; padding: 25px; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; box-sizing: border-box; }
-        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 500; }
+        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 500; letter-spacing: 2px; }
         .nav-item { padding: 12px 18px; border-radius: 12px; cursor: pointer; margin-bottom: 8px; color: #a0aec0; display: flex; align-items: center; gap: 12px; transition: 0.3s; }
         .nav-item:hover, .nav-item.active { background: var(--primary); color: white; }
 
-        /* Content Area */
+        /* Main Content */
         .main-content { flex: 1; padding: 30px 20px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
-        .box, .news-card { background: var(--card-bg); padding: 25px; border-radius: 20px; width: 100%; max-width: 600px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; position: relative; box-sizing: border-box; transition: 0.3s; border: 1px solid var(--border); }
+        .box, .news-card { background: var(--card-bg); padding: 25px; border-radius: 20px; width: 100%; max-width: 600px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; position: relative; box-sizing: border-box; border: 1px solid var(--border); }
         
-        /* Inputs */
         input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 12px; font-family: 'Kanit'; outline: none; box-sizing: border-box; background: var(--bg); color: var(--text-main); }
-        .btn-post { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 500; font-size: 16px; }
-        .btn-post:disabled { background: #999; cursor: not-allowed; }
+        .btn-post { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 500; font-size: 16px; transition: 0.2s; }
+        .btn-post:active { transform: scale(0.98); }
 
-        /* News Visuals */
-        .post-img { width: 100%; border-radius: 15px; margin: 15px 0; max-height: 450px; object-fit: cover; border: 1px solid var(--border); }
+        /* News Card */
+        .post-img { width: 100%; border-radius: 15px; margin: 15px 0; max-height: 400px; object-fit: cover; }
         .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 500; margin-bottom: 10px; display: inline-block; }
         .bg-urgent { background: #ffe5e5; color: #ff4d4d; }
         .bg-study { background: #e5f0ff; color: #1877f2; }
         .bg-activity { background: #e5f9e5; color: #2ecc71; }
         .bg-general { background: #f0f2f5; color: #666; }
 
-        .btn-delete { position: absolute; top: 20px; right: 20px; color: #ffbcbc; cursor: pointer; background: none; border: none; font-size: 1.1em; }
         .action-bar { display: flex; gap: 20px; border-top: 1px solid var(--border); padding-top: 15px; margin-top: 10px; }
         .action-btn { cursor: pointer; color: var(--text-sub); font-size: 0.9em; background:none; border:none; font-family:'Kanit'; display: flex; align-items: center; gap: 6px; }
         .action-btn.liked { color: #ff4d4d; font-weight: bold; }
+
+        /* คอมเมนต์ & ชื่อ e */
+        .comment-section { margin-top: 15px; background: rgba(0,0,0,0.03); padding: 15px; border-radius: 15px; }
+        .comment-item { font-size: 0.85em; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px dashed var(--border); }
+        .comment-box { display: flex; gap: 8px; margin-top: 10px; }
+        .input-name-e { width: 55px; text-align: center; border-radius: 10px; padding: 8px; border: 1px solid var(--border); font-weight: bold; }
+        .input-msg { flex: 1; border-radius: 10px; padding: 8px; border: 1px solid var(--border); }
+        .btn-send { background: var(--primary); color: white; border: none; width: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
         @media (max-width: 850px) {
             body { flex-direction: column; }
             .sidebar { width: 100%; height: auto; flex-direction: row; overflow-x: auto; position: relative; padding: 10px; }
             .sidebar h2 { display: none; }
-            .nav-item { white-space: nowrap; }
         }
     </style>
 </head>
@@ -75,7 +70,7 @@
         <div class="nav-item" onclick="filterNews('⚽ กิจกรรม', this)"><i class="fas fa-volleyball-ball"></i> กิจกรรม</div>
         <div class="nav-item" onclick="filterNews('⚠️ ด่วน', this)"><i class="fas fa-fire"></i> ด่วน</div>
         
-        <div class="nav-item" onclick="toggleDarkMode()" style="margin-top: auto; border-top: 1px solid #334155; padding-top: 20px;">
+        <div class="nav-item" onclick="toggleDarkMode()" style="margin-top: auto;">
             <i class="fas fa-moon" id="darkIcon"></i> <span id="darkText">โหมดมืด</span>
         </div>
     </div>
@@ -83,12 +78,12 @@
     <div class="main-content">
         <div style="width: 100%; max-width: 600px; margin-bottom: 25px; position: relative;">
             <i class="fas fa-search" style="position: absolute; left: 15px; top: 15px; color: var(--text-sub);"></i>
-            <input type="text" id="searchInput" placeholder="ค้นหาข่าว..." onkeyup="searchNews()" style="padding-left: 45px; margin: 0;">
+            <input type="text" id="searchInput" placeholder="ค้นหาโพสต์..." onkeyup="searchNews()" style="padding-left: 45px; margin: 0;">
         </div>
 
         <div class="box">
             <h3 style="margin:0 0 15px 0;">📝 สร้างโพสต์ใหม่</h3>
-            <input type="text" id="author" placeholder="ชื่อเล่นของคุณ">
+            <input type="text" id="author" placeholder="ชื่อของคุณ (เช่น ครูสมชาย)">
             <select id="category">
                 <option value="📢 ทั่วไป">📢 ทั่วไป</option>
                 <option value="📚 การเรียน">📚 การเรียน</option>
@@ -96,21 +91,17 @@
                 <option value="⚠️ ด่วน">⚠️ ด่วน</option>
             </select>
             <input type="text" id="title" placeholder="หัวข้อข่าว">
-            <textarea id="content" rows="3" placeholder="รายละเอียด..."></textarea>
-            <div style="margin: 10px 0;">
-                <label style="font-size: 0.85em; color: var(--text-sub); cursor: pointer;">
-                    <i class="fas fa-image"></i> เลือกรูปภาพ: 
-                    <input type="file" id="fileInput" accept="image/*" style="border:none; background:none; width: auto;">
-                </label>
-            </div>
-            <button class="btn-post" onclick="sendPost()">โพสต์ข่าวสาร</button>
+            <textarea id="content" rows="3" placeholder="รายละเอียดข่าวสาร..."></textarea>
+            <input type="file" id="fileInput" accept="image/*" style="border:none; padding: 10px 0;">
+            <button class="btn-post" id="postBtn" onclick="sendPost()">โพสต์ข่าวสาร</button>
         </div>
 
         <div id="news-container" style="width: 100%; max-width: 600px;"></div>
     </div>
 
     <script>
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzp8_PKgRIMbYZ_5jH5r5Ym11kYG1y1xsDHeUZanv5divBDpRkZ2E2e86b2aE-uROO-Ow/exec'; 
+        // --- ส่วนเชื่อมต่อหลังบ้าน ---
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbyOXC-dEWviVExnJJK7afvyVNvzYxApkbvOkH1pqq33hzFddcLSdnuXnAHSJE7im6M-mw/exec'; 
         const imgbbKey = '6efa0ae30c7b9826f854d378410baf4e'; 
 
         let allNews = [];
@@ -121,99 +112,136 @@
             loadNews();
         };
 
-        // --- ระบบ Dark Mode ---
-        function toggleDarkMode() {
-            const isDark = !document.body.classList.contains('dark-mode');
-            applyDarkMode(isDark);
-        }
-
-        function applyDarkMode(isDark) {
-            if(isDark) {
-                document.body.classList.add('dark-mode');
-                document.getElementById('darkText').innerText = "โหมดสว่าง";
-                document.getElementById('darkIcon').className = "fas fa-sun";
-                localStorage.setItem("theme", "dark");
-            } else {
-                document.body.classList.remove('dark-mode');
-                document.getElementById('darkText').innerText = "โหมดมืด";
-                document.getElementById('darkIcon').className = "fas fa-moon";
-                localStorage.setItem("theme", "light");
-            }
-        }
-
         async function loadNews() {
             try {
                 const resp = await fetch(scriptUrl);
                 allNews = await resp.json();
                 renderNews(allNews);
-            } catch(e) { console.error(e); }
+            } catch(e) { console.error("โหลดข้อมูลล้มเหลว:", e); }
         }
 
         function renderNews(data) {
-            let html = '';
-            const myName = localStorage.getItem("myName");
-            [...data].reverse().forEach(item => {
-                let badgeClass = item.category.includes('ด่วน') ? 'bg-urgent' : item.category.includes('การเรียน') ? 'bg-study' : item.category.includes('กิจกรรม') ? 'bg-activity' : 'bg-general';
-                let imgTag = item.image ? `<img src="${item.image}" class="post-img" loading="lazy">` : '';
-                let time = new Date(item.date).toLocaleString('th-TH', {hour:'2-digit', minute:'2-digit'});
-                const hasLiked = localStorage.getItem("liked_" + item.title) ? 'liked' : '';
-                let delBtn = (item.username === myName) ? `<button class="btn-delete" onclick="deletePost('${item.title}')"><i class="fas fa-trash-alt"></i></button>` : '';
+    let html = '';
+    const myStoredName = localStorage.getItem("myName") || "e"; // ชื่อที่เราใช้ปัจจุบัน
 
-                html += `
-                    <div class="news-card">
-                        ${delBtn}
-                        <span class="badge ${badgeClass}">${item.category}</span>
-                        <h3 style="margin:5px 0">${item.title}</h3>
-                        <p style="color:var(--text-main); line-height:1.6;">${item.content}</p>
-                        ${imgTag}
-                        <div style="font-size:0.8em; color:var(--text-sub)">โดย ${item.author} • ${time} น.</div>
-                        <div class="action-bar">
-                            <button class="action-btn ${hasLiked}" onclick="likePost('${item.title}', this)">
-                                <i class="fas fa-heart"></i> ${hasLiked ? 'ถูกใจแล้ว' : 'ถูกใจ'} (${item.likes})
-                            </button>
-                            <button class="action-btn" onclick="sendComment('${item.title}')"><i class="fas fa-comment"></i> ตอบกลับ</button>
-                        </div>
-                        <div style="margin-top:10px">${item.comments.map(c => `<div style="font-size:0.85em; background:rgba(0,0,0,0.05); padding:8px; border-radius:10px; margin-bottom:5px"><b>${c.commenter}:</b> ${c.text}</div>`).join('')}</div>
-                    </div>`;
+    [...data].reverse().forEach((item, index) => {
+        let badgeClass = item.category.includes('ด่วน') ? 'bg-urgent' : item.category.includes('การเรียน') ? 'bg-study' : item.category.includes('กิจกรรม') ? 'bg-activity' : 'bg-general';
+        const hasLiked = localStorage.getItem("liked_" + item.title) ? 'liked' : '';
+        const id = `post-${index}`;
+
+        // --- เช็กว่าเราเป็นเจ้าของโพสต์ไหม (ถ้าชื่อตรงกันให้โชว์ปุ่มลบ) ---
+        const isOwner = (item.author === localStorage.getItem("myName"));
+        const deleteBtn = isOwner ? `
+            <button onclick="deletePost('${item.title.replace(/'/g, "\\'")}')" 
+                    style="position: absolute; top: 15px; right: 15px; color: #ffbcbc; background: none; border: none; cursor: pointer; font-size: 1.1em;"
+                    title="ลบโพสต์นี้">
+                <i class="fas fa-trash-alt"></i>
+            </button>` : '';
+
+        html += `
+        <div class="news-card" style="position: relative;">
+            ${deleteBtn}
+            <span class="badge ${badgeClass}">${item.category}</span>
+            <h3 style="margin:5px 0; padding-right: 30px;">${item.title}</h3>
+            <p style="white-space: pre-wrap;">${item.content}</p>
+            ${item.image ? `<img src="${item.image}" class="post-img" loading="lazy">` : ''}
+            <div style="font-size:0.8em; color:var(--text-sub)">โดย ${item.author}</div>
+            
+            <div class="action-bar">
+                <button class="action-btn ${hasLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)">
+                    <i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})
+                </button>
+                <button class="action-btn" onclick="document.getElementById('input-${id}').focus()">
+                    <i class="fas fa-comment"></i> ตอบกลับ
+                </button>
+            </div>
+
+            <div class="comment-section">
+                <div id="comments-${id}">
+                    ${(item.comments || []).map(c => `
+                        <div class="comment-item">
+                            <b style="color:var(--primary)">${c.commenter}:</b> ${c.text}
+                        </div>`).join('')}
+                </div>
+                <div class="comment-box">
+                    <input type="text" id="name-${id}" value="${myStoredName}" class="input-name-e">
+                    <input type="text" id="input-${id}" placeholder="พิมพ์ข้อความ..." class="input-msg">
+                    <button class="btn-send" onclick="sendCommentNew('${item.title.replace(/'/g, "\\'")}', '${id}')">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>`;
+    });
+    document.getElementById('news-container').innerHTML = html || "กำลังรอข้อมูลจากดาวอังคาร...";
+}
+
+// เพิ่มฟังก์ชันลบโพสต์ (ถ้าในโค้ดเดิมไม่มี)
+async function deletePost(title) {
+    if(!confirm("เพื่อนแน่ใจนะว่าจะลบโพสต์นี้? ลบแล้วกู้ไม่ได้นะ!")) return;
+    
+    // ส่งคำสั่ง delete ไปที่ Apps Script
+    await fetch(scriptUrl, { 
+        method: 'POST', 
+        body: JSON.stringify({ 
+            action: 'delete', 
+            title: title, 
+            username: localStorage.getItem("myName") 
+        }) 
+    });
+    
+    location.reload(); // รีโหลดหน้าเว็บเพื่ออัปเดตข้อมูล
+}
+
+        // --- ระบบส่งคอมเมนต์ (มีชื่อ e) ---
+        async function sendCommentNew(title, id) {
+            const commenter = document.getElementById(`name-${id}`).value || "e";
+            const text = document.getElementById(`input-${id}`).value.trim();
+            if(!text) return;
+
+            localStorage.setItem("myName", commenter);
+            
+            // ส่งไป Apps Script
+            await fetch(scriptUrl, { 
+                method: 'POST', 
+                body: JSON.stringify({ action: 'comment', title, commenter, text }) 
             });
-            document.getElementById('news-container').innerHTML = html || "ไม่มีข้อมูล";
+            
+            loadNews(); // โหลดใหม่เพื่อโชว์ผล
         }
 
+        // --- ระบบสร้างโพสต์ใหม่ ---
         async function sendPost() {
-            const author = document.getElementById('author').value;
-            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value.trim();
+            const title = document.getElementById('title').value.trim();
             const content = document.getElementById('content').value;
             const category = document.getElementById('category').value;
             const fileInput = document.getElementById('fileInput');
 
-            if(!author || !title) return alert("กรุณาใส่ชื่อและหัวข้อ");
+            if(!author || !title) return alert("กรุณาระบุชื่อและหัวข้อครับ");
 
-            const btn = document.querySelector('.btn-post');
-            btn.disabled = true; btn.innerText = "กำลังอัปโหลดรูป...";
+            const btn = document.getElementById('postBtn');
+            btn.disabled = true; btn.innerText = "กำลังโพสต์...";
 
             let imageUrl = "";
             if (fileInput.files.length > 0) {
                 const formData = new FormData();
                 formData.append("image", fileInput.files[0]);
-                try {
-                    const imgResp = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });
-                    const imgResult = await imgResp.json();
-                    if(imgResult.success) imageUrl = imgResult.data.url;
-                } catch (err) { console.error(err); }
+                const imgResp = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });
+                const imgResult = await imgResp.json();
+                if(imgResult.success) imageUrl = imgResult.data.url;
             }
 
-            btn.innerText = "กำลังบันทึกข้อมูล...";
-            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, category, username: author, imageLink: imageUrl }) });
+            await fetch(scriptUrl, { 
+                method: 'POST', 
+                body: JSON.stringify({ action: 'add', author, title, content, category, username: author, imageLink: imageUrl }) 
+            });
+            
             localStorage.setItem("myName", author);
             location.reload();
         }
 
-        async function deletePost(title) {
-            if(!confirm("ต้องการลบโพสต์นี้หรือไม่?")) return;
-            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, username: localStorage.getItem("myName") }) });
-            location.reload();
-        }
-
+        // --- ระบบเสริม (Like, Dark Mode, ค้นหา) ---
         async function likePost(title, btn) {
             if (localStorage.getItem("liked_" + title)) return;
             btn.classList.add('liked');
@@ -222,22 +250,23 @@
             loadNews();
         }
 
-        function searchNews() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            renderNews(allNews.filter(i => i.title.toLowerCase().includes(term) || i.content.toLowerCase().includes(term)));
-        }
-
         function filterNews(cat, btn) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             btn.classList.add('active');
             renderNews(cat === 'ทั้งหมด' ? allNews : allNews.filter(i => i.category === cat));
         }
 
-        async function sendComment(title) {
-            const text = prompt("เขียนตอบกลับ:");
-            if(!text) return;
-            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'comment', title, commenter: localStorage.getItem("myName"), text }) });
-            loadNews();
+        function searchNews() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            renderNews(allNews.filter(i => i.title.toLowerCase().includes(term) || i.content.toLowerCase().includes(term)));
+        }
+
+        function toggleDarkMode() { applyDarkMode(!document.body.classList.contains('dark-mode')); }
+        function applyDarkMode(isDark) {
+            document.body.classList.toggle('dark-mode', isDark);
+            document.getElementById('darkText').innerText = isDark ? "โหมดสว่าง" : "โหมดมืด";
+            document.getElementById('darkIcon').className = isDark ? "fas fa-sun" : "fas fa-moon";
+            localStorage.setItem("theme", isDark ? "dark" : "light");
         }
     </script>
 </body>
