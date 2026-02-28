@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Board Ultimate V.5.5</title>
+    <title>School Board Ultimate V.5.5 (Updated)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
@@ -40,6 +40,9 @@
         .bg-study { background: #e5f0ff; color: #1877f2; }
         .bg-activity { background: #e5f9e5; color: #2ecc71; }
         .bg-general { background: #f0f2f5; color: #666; }
+        /* เพิ่มสีใหม่ตรงนี้ */
+        .bg-important { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .bg-topic { background: #f4ebff; color: #9b59b6; border: 1px solid #dcd0ff; }
 
         .action-bar { display: flex; gap: 20px; border-top: 1px solid var(--border); padding-top: 15px; margin-top: 10px; }
         .action-btn { cursor: pointer; color: var(--text-sub); font-size: 0.9em; background:none; border:none; font-family:'Kanit'; display: flex; align-items: center; gap: 6px; }
@@ -66,7 +69,7 @@
         <h2>SCHOOL</h2>
         <div class="nav-item active" onclick="filterNews('ทั้งหมด', this)"><i class="fas fa-home"></i> ทั้งหมด</div>
         <div class="nav-item" onclick="filterNews('📢 ทั่วไป', this)"><i class="fas fa-bullhorn"></i> ทั่วไป</div>
-        <div class="nav-item" onclick="filterNews('📚 การเรียน', this)"><i class="fas fa-book-open"></i> การเรียน</div>
+        <div class="nav-item" onclick="filterNews('📌 สำคัญ', this)"><i class="fas fa-thumbtack"></i> สำคัญ</div> <div class="nav-item" onclick="filterNews('🔥 เปิดประเด็น', this)"><i class="fas fa-fire-alt"></i> เปิดประเด็น</div> <div class="nav-item" onclick="filterNews('📚 การเรียน', this)"><i class="fas fa-book-open"></i> การเรียน</div>
         <div class="nav-item" onclick="filterNews('⚽ กิจกรรม', this)"><i class="fas fa-volleyball-ball"></i> กิจกรรม</div>
         <div class="nav-item" onclick="filterNews('⚠️ ด่วน', this)"><i class="fas fa-fire"></i> ด่วน</div>
         
@@ -86,7 +89,7 @@
             <input type="text" id="author" placeholder="ชื่อของคุณ (เช่น ครูสมชาย)">
             <select id="category">
                 <option value="📢 ทั่วไป">📢 ทั่วไป</option>
-                <option value="📚 การเรียน">📚 การเรียน</option>
+                <option value="📌 สำคัญ">📌 สำคัญ</option> <option value="🔥 เปิดประเด็น">🔥 เปิดประเด็น</option> <option value="📚 การเรียน">📚 การเรียน</option>
                 <option value="⚽ กิจกรรม">⚽ กิจกรรม</option>
                 <option value="⚠️ ด่วน">⚠️ ด่วน</option>
             </select>
@@ -100,8 +103,7 @@
     </div>
 
     <script>
-        // --- ส่วนเชื่อมต่อหลังบ้าน ---
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbyOXC-dEWviVExnJJK7afvyVNvzYxApkbvOkH1pqq33hzFddcLSdnuXnAHSJE7im6M-mw/exec'; 
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbw3k9pC_aOafrBF81vywEXpcZtIVFIK-6y-3Q59JEk3WKC-q4QYw8V5tZwDTF8XDyfSKg/exec'; 
         const imgbbKey = '6efa0ae30c7b9826f854d378410baf4e'; 
 
         let allNews = [];
@@ -121,108 +123,76 @@
         }
 
         function renderNews(data) {
-    let html = '';
-    const myStoredName = localStorage.getItem("myName") || "e"; // ชื่อที่เราใช้ปัจจุบัน
+            let html = '';
+            const myStoredName = localStorage.getItem("myName") || "e";
 
-    [...data].reverse().forEach((item, index) => {
-        let badgeClass = item.category.includes('ด่วน') ? 'bg-urgent' : item.category.includes('การเรียน') ? 'bg-study' : item.category.includes('กิจกรรม') ? 'bg-activity' : 'bg-general';
-        const hasLiked = localStorage.getItem("liked_" + item.title) ? 'liked' : '';
-        const id = `post-${index}`;
+            [...data].reverse().forEach((item, index) => {
+                // แก้ไขการเลือกสี Badge ให้รองรับหมวดใหม่
+                let badgeClass = 'bg-general';
+                if (item.category.includes('ด่วน')) badgeClass = 'bg-urgent';
+                else if (item.category.includes('สำคัญ')) badgeClass = 'bg-important';
+                else if (item.category.includes('เปิดประเด็น')) badgeClass = 'bg-topic';
+                else if (item.category.includes('การเรียน')) badgeClass = 'bg-study';
+                else if (item.category.includes('กิจกรรม')) badgeClass = 'bg-activity';
 
-        // --- เช็กว่าเราเป็นเจ้าของโพสต์ไหม (ถ้าชื่อตรงกันให้โชว์ปุ่มลบ) ---
-        const isOwner = (item.author === localStorage.getItem("myName"));
-        const deleteBtn = isOwner ? `
-            <button onclick="deletePost('${item.title.replace(/'/g, "\\'")}')" 
-                    style="position: absolute; top: 15px; right: 15px; color: #ffbcbc; background: none; border: none; cursor: pointer; font-size: 1.1em;"
-                    title="ลบโพสต์นี้">
-                <i class="fas fa-trash-alt"></i>
-            </button>` : '';
+                const hasLiked = localStorage.getItem("liked_" + item.title) ? 'liked' : '';
+                const id = `post-${index}`;
+                const isOwner = (item.author === localStorage.getItem("myName"));
+                const deleteBtn = isOwner ? `<button onclick="deletePost('${item.title.replace(/'/g, "\\'")}')" style="position: absolute; top: 15px; right: 15px; color: #ffbcbc; background: none; border: none; cursor: pointer; font-size: 1.1em;" title="ลบโพสต์นี้"><i class="fas fa-trash-alt"></i></button>` : '';
 
-        html += `
-        <div class="news-card" style="position: relative;">
-            ${deleteBtn}
-            <span class="badge ${badgeClass}">${item.category}</span>
-            <h3 style="margin:5px 0; padding-right: 30px;">${item.title}</h3>
-            <p style="white-space: pre-wrap;">${item.content}</p>
-            ${item.image ? `<img src="${item.image}" class="post-img" loading="lazy">` : ''}
-            <div style="font-size:0.8em; color:var(--text-sub)">โดย ${item.author}</div>
-            
-            <div class="action-bar">
-                <button class="action-btn ${hasLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)">
-                    <i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})
-                </button>
-                <button class="action-btn" onclick="document.getElementById('input-${id}').focus()">
-                    <i class="fas fa-comment"></i> ตอบกลับ
-                </button>
-            </div>
+                html += `
+                <div class="news-card" style="position: relative;">
+                    ${deleteBtn}
+                    <span class="badge ${badgeClass}">${item.category}</span>
+                    <h3 style="margin:5px 0; padding-right: 30px;">${item.title}</h3>
+                    <p style="white-space: pre-wrap;">${item.content}</p>
+                    ${item.image ? `<img src="${item.image}" class="post-img" loading="lazy">` : ''}
+                    <div style="font-size:0.8em; color:var(--text-sub)">โดย ${item.author}</div>
+                    <div class="action-bar">
+                        <button class="action-btn ${hasLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)">
+                            <i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})
+                        </button>
+                        <button class="action-btn" onclick="document.getElementById('input-${id}').focus()">
+                            <i class="fas fa-comment"></i> ตอบกลับ
+                        </button>
+                    </div>
+                    <div class="comment-section">
+                        <div id="comments-${id}">${(item.comments || []).map(c => `<div class="comment-item"><b style="color:var(--primary)">${c.commenter}:</b> ${c.text}</div>`).join('')}</div>
+                        <div class="comment-box">
+                            <input type="text" id="name-${id}" value="${myStoredName}" class="input-name-e">
+                            <input type="text" id="input-${id}" placeholder="พิมพ์ข้อความ..." class="input-msg">
+                            <button class="btn-send" onclick="sendCommentNew('${item.title.replace(/'/g, "\\'")}', '${id}')"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('news-container').innerHTML = html || "กำลังรอข้อมูล...";
+        }
 
-            <div class="comment-section">
-                <div id="comments-${id}">
-                    ${(item.comments || []).map(c => `
-                        <div class="comment-item">
-                            <b style="color:var(--primary)">${c.commenter}:</b> ${c.text}
-                        </div>`).join('')}
-                </div>
-                <div class="comment-box">
-                    <input type="text" id="name-${id}" value="${myStoredName}" class="input-name-e">
-                    <input type="text" id="input-${id}" placeholder="พิมพ์ข้อความ..." class="input-msg">
-                    <button class="btn-send" onclick="sendCommentNew('${item.title.replace(/'/g, "\\'")}', '${id}')">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>`;
-    });
-    document.getElementById('news-container').innerHTML = html || "กำลังรอข้อมูลจากดาวอังคาร...";
-}
+        async function deletePost(title) {
+            if(!confirm("เพื่อนแน่ใจนะว่าจะลบโพสต์นี้?")) return;
+            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, username: localStorage.getItem("myName") }) });
+            location.reload();
+        }
 
-// เพิ่มฟังก์ชันลบโพสต์ (ถ้าในโค้ดเดิมไม่มี)
-async function deletePost(title) {
-    if(!confirm("เพื่อนแน่ใจนะว่าจะลบโพสต์นี้? ลบแล้วกู้ไม่ได้นะ!")) return;
-    
-    // ส่งคำสั่ง delete ไปที่ Apps Script
-    await fetch(scriptUrl, { 
-        method: 'POST', 
-        body: JSON.stringify({ 
-            action: 'delete', 
-            title: title, 
-            username: localStorage.getItem("myName") 
-        }) 
-    });
-    
-    location.reload(); // รีโหลดหน้าเว็บเพื่ออัปเดตข้อมูล
-}
-
-        // --- ระบบส่งคอมเมนต์ (มีชื่อ e) ---
         async function sendCommentNew(title, id) {
             const commenter = document.getElementById(`name-${id}`).value || "e";
             const text = document.getElementById(`input-${id}`).value.trim();
             if(!text) return;
-
             localStorage.setItem("myName", commenter);
-            
-            // ส่งไป Apps Script
-            await fetch(scriptUrl, { 
-                method: 'POST', 
-                body: JSON.stringify({ action: 'comment', title, commenter, text }) 
-            });
-            
-            loadNews(); // โหลดใหม่เพื่อโชว์ผล
+            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'comment', title, commenter, text }) });
+            loadNews();
         }
 
-        // --- ระบบสร้างโพสต์ใหม่ ---
         async function sendPost() {
             const author = document.getElementById('author').value.trim();
             const title = document.getElementById('title').value.trim();
             const content = document.getElementById('content').value;
             const category = document.getElementById('category').value;
             const fileInput = document.getElementById('fileInput');
-
             if(!author || !title) return alert("กรุณาระบุชื่อและหัวข้อครับ");
-
             const btn = document.getElementById('postBtn');
             btn.disabled = true; btn.innerText = "กำลังโพสต์...";
-
             let imageUrl = "";
             if (fileInput.files.length > 0) {
                 const formData = new FormData();
@@ -231,17 +201,11 @@ async function deletePost(title) {
                 const imgResult = await imgResp.json();
                 if(imgResult.success) imageUrl = imgResult.data.url;
             }
-
-            await fetch(scriptUrl, { 
-                method: 'POST', 
-                body: JSON.stringify({ action: 'add', author, title, content, category, username: author, imageLink: imageUrl }) 
-            });
-            
+            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, category, username: author, imageLink: imageUrl }) });
             localStorage.setItem("myName", author);
             location.reload();
         }
 
-        // --- ระบบเสริม (Like, Dark Mode, ค้นหา) ---
         async function likePost(title, btn) {
             if (localStorage.getItem("liked_" + title)) return;
             btn.classList.add('liked');
