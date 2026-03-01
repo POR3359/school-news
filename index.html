@@ -28,18 +28,55 @@
         .box, .news-card { background: var(--card-bg); border-radius: 16px; width: 100%; max-width: 650px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid var(--border); box-sizing: border-box; position: relative; }
         
         /* โหมดมือถือ (Mobile) */
-        @media (max-width: 768px) {
-            body { flex-direction: column; } /* เปลี่ยนจากวางข้างกัน เป็นวางต่อกันบนล่าง */
-            .sidebar { 
-                width: 100%; height: auto; position: relative; padding: 10px; 
-                display: flex; overflow-x: auto; /* เมนูเลื่อนซ้ายขวาได้ */
-                white-space: nowrap; gap: 8px;
-            }
-            .sidebar h2 { display: none; } /* ซ่อนชื่อในเมนูเพื่อไม่ให้เกะกะ */
-            .nav-item { margin-bottom: 0; padding: 8px 15px; font-size: 14px; flex-shrink: 0; }
-            .main-content { padding: 15px; }
-            .box-body, .news-card { padding: 15px; }
-        }
+       @media (max-width: 768px) {
+    body { 
+        flex-direction: column; /* เรียงต่อกันบนล่าง */
+        overflow-x: hidden; /* ห้ามเลื่อนซ้ายขวาที่ตัว body */
+    }
+
+    .sidebar { 
+        width: 100vw; /* กว้างเต็มหน้าจอมือถือพอดี */
+        height: auto; 
+        position: sticky; 
+        top: 0; 
+        padding: 10px; 
+        display: flex; 
+        overflow-x: auto; /* เลื่อนเมนูซ้ายขวาได้ */
+        white-space: nowrap; 
+        gap: 8px;
+        background: var(--sidebar); 
+        z-index: 1000;
+        border-radius: 0; /* เอาขอบมนออกเพื่อให้ชิดขอบจอ */
+        box-sizing: border-box;
+    }
+
+    /* ซ่อนแถบเลื่อนเพื่อให้ดูสะอาดแบบในรูป */
+    .sidebar::-webkit-scrollbar { display: none; }
+    .sidebar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .sidebar h2 { display: none; } /* ซ่อนชื่อใหญ่ในมือถือตามรูป */
+
+    .nav-item { 
+        margin-bottom: 0; 
+        padding: 8px 16px; 
+        font-size: 14px; 
+        flex-shrink: 0; /* ป้องกันปุ่มโดนบีบ */
+        border-radius: 20px;
+    }
+
+    .main-content { 
+        width: 100%; /* กว้างเต็มจอ */
+        padding: 15px; 
+        box-sizing: border-box; /* คำนวณ padding ไม่ให้ล้นจอ */
+        margin: 0;
+    }
+
+    .box, .news-card { 
+        max-width: 100%; /* ให้การ์ดกว้างเต็มพื้นที่มือถือ */
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
 
         .post-img { width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius: 10px; margin: 12px 0; }
         .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; margin-bottom: 8px; display: inline-block; }
