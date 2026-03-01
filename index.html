@@ -354,7 +354,25 @@
     }
 }
 
-    window.onload = initApp;
-    </script>
-</body>
+    // --- เพิ่มฟังก์ชันนี้ลงไปเพื่อให้เมนูฝั่งซ้ายใช้งานได้ ---
+function filterNews(category, element) {
+    console.log("กำลังกรองหมวดหมู่:", category);
+    
+    // 1. เปลี่ยนสถานะปุ่ม Active ให้ดูว่าเลือกอันไหนอยู่
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    if (element) element.classList.add('active');
+
+    // 2. กรองข้อมูล
+    if (category === 'ทั้งหมด') {
+        renderNews(allNews);
+    } else {
+        const filtered = allNews.filter(item => item.category === category);
+        renderNews(filtered);
+     }
+  }
+
+
+                          window.onload = initApp;
+      </script>
+    </body>
 </html>
