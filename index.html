@@ -200,8 +200,13 @@
                     <h3 style="margin: 5px 0 10px 0;">${item.title}</h3>
                     <p style="white-space: pre-wrap; font-size: 0.95rem; margin-bottom: 12px;">${item.content}</p>
                     ${item.image ? `<img src="${item.image}" class="post-img">` : ''}
-                    <div style="font-size: 13px; color: var(--text-sub); margin-bottom: 12px;">โดย <b>${item.author}</b></div>
-                    
+                    <div style="font-size: 12px; color: var(--text-sub); margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+    <span>โดย <b>${item.author}</b></span>
+    <span style="opacity: 0.7; font-size: 11px;">
+        <i class="far fa-clock"></i> 
+        ${item.date ? new Date(item.date).toLocaleString('th-TH', {hour:'2-digit', minute:'2-digit', day:'2-digit', month:'short'}) : 'ไม่มีเวลา'}
+    </span>
+</div>
                     <div class="action-bar">
                         <button class="action-btn ${isLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)">
                             <i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})
@@ -224,7 +229,7 @@
                         <div style="display:flex; gap:8px; margin-top:10px;">
                             <input type="text" id="name-${id}" value="${myName}" style="width:70px; margin:0; padding:8px;" placeholder="ชื่อ">
                             <input type="text" id="input-${id}" style="margin:0; padding:8px;" placeholder="ตอบกลับ...">
-                            <button class="btn-post" style="padding:0 12px;" onclick="sendCommentNew('${item.title.replace(/'/g, "\\'")}', '${id}')"><i class="fas fa-paper-plane"></i></button>
+                            <button class="btn-post" style="padding:0 12px;" onclick="sendCommentNew('${item.title.replace(/'/g, "\\'")}', '${id}', this)"><i class="fas fa-paper-plane"></i></button>
                         </div>
                     </div>
                 </div>
@@ -311,20 +316,43 @@
         loadNews();
     }
 
-    async function sendCommentNew(title, id) {
-        const commenter = document.getElementById(`name-${id}`).value.trim() || "คนบัวเชด";
-        const text = document.getElementById(`input-${id}`).value.trim();
-        if(!text) return;
-        localStorage.setItem("myName", commenter);
-        await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'comment', title, commenter, text }) });
-        loadNews();
-    }
+    async function sendCommentNew(title, id, btn) { // เพิ่ม btn เข้ามาในพารามิเตอร์
+    const commenter = document.getElementById(`name-${id}`).value.trim() || "คนบัวเชด";
+    const textInput = document.getElementById(`input-${id}`);
+    const text = textInput.value.trim();
 
-    function filterNews(cat, btn) {
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        btn.classList.add('active');
-        renderNews(cat === 'ทั้งหมด' ? allNews : allNews.filter(i => i.category === cat));
+    if(!text || btn.disabled) return; // ถ้าไม่มีข้อความ หรือปุ่มถูกล็อกอยู่ ให้หยุดทำงานทันที
+
+    // 1. ล็อกปุ่มทันที และเปลี่ยนไอคอนเป็นหมุนๆ
+    btn.disabled = true;
+    btn.style.cursor = "not-allowed";
+    btn.style.opacity = "0.6";
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>'; 
+
+    try {
+        localStorage.setItem("myName", commenter);
+        
+        // 2. ส่งข้อมูลไปที่ Google Sheets
+        const resp = await fetch(scriptUrl, { 
+            method: 'POST', 
+            body: JSON.stringify({ action: 'comment', title, commenter, text }) 
+        });
+
+        if(resp.ok) {
+            textInput.value = ''; // ล้างช่องพิมพ์ทันทีเมื่อส่งสำเร็จ
+            await loadNews(); // โหลดข้อมูลใหม่
+        }
+    } catch (e) {
+        Swal.fire('ขออภัย', 'ส่งไม่สำเร็จ ลองใหม่อีกครั้งนะครับ', 'error');
+    } finally {
+        // 3. ปลดล็อกปุ่มให้กลับมาใช้งานได้
+        btn.disabled = false;
+        btn.style.cursor = "pointer";
+        btn.style.opacity = "1";
+        btn.innerHTML = originalContent;
     }
+}
 
     window.onload = initApp;
     </script>
