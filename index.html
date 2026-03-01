@@ -1,237 +1,286 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Board Ultimate V.5.5 (Updated)</title>
+    <title>School Board</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --primary: #1877f2; --bg: #f0f2f5; --sidebar: #1a202c; --card-bg: #ffffff;
-            --text-main: #1a202c; --text-sub: #64748b; --border: #e2e8f0;
+            --primary: #1877f2; --bg: #f0f2f5; --sidebar: #1a202c; 
+            --card-bg: #ffffff; --text-main: #1c1e21; --text-sub: #65676b; 
+            --border: #ced0d4; --shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.1);
         }
-
         body.dark-mode {
-            --bg: #0f172a; --card-bg: #1e293b; --text-main: #f1f5f9;
+            --bg: #0b1426; --card-bg: #1e293b; --text-main: #f1f5f9;
             --text-sub: #94a3b8; --border: #334155;
         }
-
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; display: flex; min-height: 100vh; transition: 0.3s; color: var(--text-main); }
         
         /* Sidebar */
-        .sidebar { width: 280px; background: var(--sidebar); color: #fff; padding: 25px; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; box-sizing: border-box; }
-        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 500; letter-spacing: 2px; }
-        .nav-item { padding: 12px 18px; border-radius: 12px; cursor: pointer; margin-bottom: 8px; color: #a0aec0; display: flex; align-items: center; gap: 12px; transition: 0.3s; }
-        .nav-item:hover, .nav-item.active { background: var(--primary); color: white; }
+        .sidebar { width: 260px; background: var(--sidebar); color: #fff; padding: 25px; position: sticky; top: 0; height: 100vh; box-sizing: border-box; flex-shrink: 0; }
+        .nav-item { padding: 12px 18px; border-radius: 12px; cursor: pointer; margin-bottom: 8px; color: #cbd5e1; display: flex; align-items: center; gap: 12px; transition: 0.2s; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .nav-item.active { background: var(--primary); color: white; }
 
-        /* Main Content */
-        .main-content { flex: 1; padding: 30px 20px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
-        .box, .news-card { background: var(--card-bg); padding: 25px; border-radius: 20px; width: 100%; max-width: 600px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; position: relative; box-sizing: border-box; border: 1px solid var(--border); }
+        .main-content { flex: 1; padding: 30px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
         
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 12px; font-family: 'Kanit'; outline: none; box-sizing: border-box; background: var(--bg); color: var(--text-main); }
-        .btn-post { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 500; font-size: 16px; transition: 0.2s; }
-        .btn-post:active { transform: scale(0.98); }
+        /* Post Box */
+        .box { background: var(--card-bg); border-radius: 16px; width: 100%; max-width: 650px; box-shadow: var(--shadow); margin-bottom: 25px; overflow: hidden; border: 1px solid var(--border); }
+        .box-header { background: var(--primary); color: white; padding: 15px 25px; font-weight: 500; }
+        .box-body { padding: 20px 25px; }
 
         /* News Card */
-        .post-img { width: 100%; border-radius: 15px; margin: 15px 0; max-height: 400px; object-fit: cover; }
-        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 500; margin-bottom: 10px; display: inline-block; }
-        .bg-urgent { background: #ffe5e5; color: #ff4d4d; }
-        .bg-study { background: #e5f0ff; color: #1877f2; }
-        .bg-activity { background: #e5f9e5; color: #2ecc71; }
-        .bg-general { background: #f0f2f5; color: #666; }
-        /* เพิ่มสีใหม่ตรงนี้ */
-        .bg-important { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
-        .bg-topic { background: #f4ebff; color: #9b59b6; border: 1px solid #dcd0ff; }
+        .news-card { background: var(--card-bg); padding: 20px; border-radius: 16px; width: 100%; max-width: 650px; box-shadow: var(--shadow); margin-bottom: 20px; position: relative; border: 1px solid var(--border); overflow: hidden; box-sizing: border-box; }
+        .post-img { width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius: 10px; margin: 12px 0; display: block; }
+        
+        input, select, textarea { width: 100%; padding: 12px 15px; margin: 8px 0; border: 1px solid var(--border); border-radius: 10px; font-family: 'Kanit'; outline: none; box-sizing: border-box; background: var(--bg); color: var(--text-main); }
+        .btn-post { padding: 10px 35px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 500; }
 
-        .action-bar { display: flex; gap: 20px; border-top: 1px solid var(--border); padding-top: 15px; margin-top: 10px; }
-        .action-btn { cursor: pointer; color: var(--text-sub); font-size: 0.9em; background:none; border:none; font-family:'Kanit'; display: flex; align-items: center; gap: 6px; }
-        .action-btn.liked { color: #ff4d4d; font-weight: bold; }
+        /* Badges */
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; margin-bottom: 10px; display: inline-block; }
+        .bg-urgent { background: #fff1f0; color: #ff4d4f; border: 1.5px solid #ff4d4f; } /* ด่วน/สำคัญ */
+        .bg-study { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; } /* การเรียน */
+        .bg-topic { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; } /* เปิดประเด็น */
+        .bg-activity { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; } /* กิจกรรม */
+        .bg-general { background: #f5f5f5; color: #595959; border: 1px solid #d9d9d9; } /* ทั่วไป */
 
-        /* คอมเมนต์ & ชื่อ e */
-        .comment-section { margin-top: 15px; background: rgba(0,0,0,0.03); padding: 15px; border-radius: 15px; }
-        .comment-item { font-size: 0.85em; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px dashed var(--border); }
-        .comment-box { display: flex; gap: 8px; margin-top: 10px; }
-        .input-name-e { width: 55px; text-align: center; border-radius: 10px; padding: 8px; border: 1px solid var(--border); font-weight: bold; }
-        .input-msg { flex: 1; border-radius: 10px; padding: 8px; border: 1px solid var(--border); }
-        .btn-send { background: var(--primary); color: white; border: none; width: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        /* Actions */
+        .action-bar { display: flex; gap: 15px; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 8px; }
+        .action-btn { background: none; border: none; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 14px; font-family: 'Kanit'; }
+        .action-btn.liked { color: #ff4d4f !important; font-weight: 600; }
+        .action-btn.liked i { animation: heartBeat 0.3s ease; }
+        @keyframes heartBeat { 0% {transform:scale(1)} 50% {transform:scale(1.3)} 100% {transform:scale(1)} }
 
-        @media (max-width: 850px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; flex-direction: row; overflow-x: auto; position: relative; padding: 10px; }
-            .sidebar h2 { display: none; }
-        }
+        /* Comment Bubble */
+        .comment-section { margin-top: 15px; background: rgba(0,0,0,0.03); padding: 15px; border-radius: 12px; }
+        .comment-bubble { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+        .bubble-text { background: var(--card-bg); padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; flex: 1; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .delete-btn { position: absolute; top: 15px; right: 15px; color: #ffbcbc; cursor: pointer; background: none; border: none; font-size: 18px; transition: 0.2s; }
+        .delete-btn:hover { color: #ff4d4f; }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>SCHOOL</h2>
-        <div class="nav-item active" onclick="filterNews('ทั้งหมด', this)"><i class="fas fa-home"></i> ทั้งหมด</div>
+        <h2 style="margin-bottom: 30px;">SCHOOL BCW Board</h2>
+        <div class="nav-item active" onclick="filterNews('ทั้งหมด', this)"><i class="fas fa-layer-group"></i> ทั้งหมด</div>
+        <div class="nav-item" onclick="filterNews('🚨 ด่วน', this)"><i class="fas fa-exclamation-triangle"></i> ด่วน</div>
+        <div class="nav-item" onclick="filterNews('📚 การเรียน', this)"><i class="fas fa-book"></i> การเรียน</div>
         <div class="nav-item" onclick="filterNews('📢 ทั่วไป', this)"><i class="fas fa-bullhorn"></i> ทั่วไป</div>
-        <div class="nav-item" onclick="filterNews('📌 สำคัญ', this)"><i class="fas fa-thumbtack"></i> สำคัญ</div> <div class="nav-item" onclick="filterNews('🔥 เปิดประเด็น', this)"><i class="fas fa-fire-alt"></i> เปิดประเด็น</div> <div class="nav-item" onclick="filterNews('📚 การเรียน', this)"><i class="fas fa-book-open"></i> การเรียน</div>
-        <div class="nav-item" onclick="filterNews('⚽ กิจกรรม', this)"><i class="fas fa-volleyball-ball"></i> กิจกรรม</div>
-        <div class="nav-item" onclick="filterNews('⚠️ ด่วน', this)"><i class="fas fa-fire"></i> ด่วน</div>
-        
-        <div class="nav-item" onclick="toggleDarkMode()" style="margin-top: auto;">
-            <i class="fas fa-moon" id="darkIcon"></i> <span id="darkText">โหมดมืด</span>
-        </div>
+        <div class="nav-item" onclick="filterNews('📌 สำคัญ', this)"><i class="fas fa-thumbtack"></i> สำคัญ</div>
+        <div class="nav-item" onclick="filterNews('🔥 เปิดประเด็น', this)"><i class="fas fa-fire-alt"></i> เปิดประเด็น</div>
+        <div class="nav-item" onclick="filterNews('⚽ กิจกรรม', this)"><i class="fas fa-trophy"></i> กิจกรรม</div>
+        <div class="nav-item" onclick="toggleDarkMode()" style="margin-top: auto;"><i class="fas fa-adjust"></i> เปลี่ยนโหมด</div>
     </div>
 
     <div class="main-content">
-        <div style="width: 100%; max-width: 600px; margin-bottom: 25px; position: relative;">
-            <i class="fas fa-search" style="position: absolute; left: 15px; top: 15px; color: var(--text-sub);"></i>
-            <input type="text" id="searchInput" placeholder="ค้นหาโพสต์..." onkeyup="searchNews()" style="padding-left: 45px; margin: 0;">
-        </div>
-
         <div class="box">
-            <h3 style="margin:0 0 15px 0;">📝 สร้างโพสต์ใหม่</h3>
-            <input type="text" id="author" placeholder="ชื่อของคุณ (เช่น ครูสมชาย)">
-            <select id="category">
-                <option value="📢 ทั่วไป">📢 ทั่วไป</option>
-                <option value="📌 สำคัญ">📌 สำคัญ</option> <option value="🔥 เปิดประเด็น">🔥 เปิดประเด็น</option> <option value="📚 การเรียน">📚 การเรียน</option>
-                <option value="⚽ กิจกรรม">⚽ กิจกรรม</option>
-                <option value="⚠️ ด่วน">⚠️ ด่วน</option>
-            </select>
-            <input type="text" id="title" placeholder="หัวข้อข่าว">
-            <textarea id="content" rows="3" placeholder="รายละเอียดข่าวสาร..."></textarea>
-            <input type="file" id="fileInput" accept="image/*" style="border:none; padding: 10px 0;">
-            <button class="btn-post" id="postBtn" onclick="sendPost()">โพสต์ข่าวสาร</button>
+            <div class="box-header"><i class="fas fa-edit"></i> กระดานข่าวโรงเรียนบัวเชดวิทยา</div>
+            <div class="box-body">
+                <input type="text" id="author" placeholder="ชื่อของคุณ...">
+                <div style="display: flex; gap: 8px;">
+                    <select id="category" style="flex: 1.2;">
+                        <option value="📢 ทั่วไป">📢 ทั่วไป</option>
+                        <option value="🚨 ด่วน">🚨 ด่วน</option>
+                        <option value="📚 การเรียน">📚 การเรียน</option>
+                        <option value="📌 สำคัญ">📌 สำคัญ</option>
+                        <option value="🔥 เปิดประเด็น">🔥 เปิดประเด็น</option>
+                        <option value="⚽ กิจกรรม">⚽ กิจกรรม</option>
+                    </select>
+                    <input type="text" id="title" placeholder="หัวข้อข่าว..." style="flex: 2;">
+                </div>
+                <textarea id="content" rows="2" placeholder="รายละเอียดข่าวสาร..."></textarea>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <label for="fileInput" style="cursor: pointer; color: var(--primary); font-size: 14px;"><i class="fas fa-image"></i> เพิ่มรูปภาพ</label>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    <button class="btn-post" onclick="sendPost()">โพสต์เลย</button>
+                </div>
+            </div>
         </div>
-
-        <div id="news-container" style="width: 100%; max-width: 600px;"></div>
+        <div id="news-container" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
     </div>
 
     <script>
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbw3k9pC_aOafrBF81vywEXpcZtIVFIK-6y-3Q59JEk3WKC-q4QYw8V5tZwDTF8XDyfSKg/exec'; 
-        const imgbbKey = '6efa0ae30c7b9826f854d378410baf4e'; 
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyrTTfSRgml5ko-XhJFNOj9_6oBRtGeNB_VbPvLdyVLAsqpbF1o2XtsLBxsbyd_3Zs00A/exec'; 
+    const imgbbKey = '6efa0ae30c7b9826f854d378410baf4e'; 
+    let allNews = [];
+    let userToken = localStorage.getItem("user_token") || "TK-" + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem("user_token", userToken);
 
-        let allNews = [];
+    // --- ฟังก์ชันสุ่มสีตามชื่อ ---
+    function getColorFromName(name) {
+        const colors = ['#1877f2', '#f02849', '#2abba7', '#f7b928', '#9360f7', '#ff7e29', '#1098ad'];
+        let hash = 0;
+        for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+        return colors[Math.abs(hash) % colors.length];
+    }
 
-        window.onload = () => {
-            if(localStorage.getItem("myName")) document.getElementById('author').value = localStorage.getItem("myName");
-            if(localStorage.getItem("theme") === "dark") applyDarkMode(true);
-            loadNews();
-        };
+    // --- เริ่มต้นระบบ (รวม Dark Mode) ---
+    function initApp() {
+        if (localStorage.getItem("darkMode") === "true") document.body.classList.add('dark-mode');
+        loadNews();
+    }
 
-        async function loadNews() {
+    function toggleDarkMode() {
+        const isDark = document.body.classList.toggle('dark-mode');
+        localStorage.setItem("darkMode", isDark);
+    }
+
+    async function loadNews() {
+        try {
+            const resp = await fetch(scriptUrl);
+            allNews = await resp.json();
+            renderNews(allNews);
+        } catch(e) { console.error("Load Error"); }
+    }
+
+    function showMoreComments(id) {
+        document.getElementById(`old-comments-${id}`).style.display = 'block';
+        document.getElementById(`view-more-${id}`).style.display = 'none';
+    }
+
+    function renderNews(data) {
+        let html = '';
+        const myName = localStorage.getItem("myName") || "";
+        [...data].reverse().forEach((item, index) => {
+            const id = `post-${index}`;
+            const comments = item.comments || [];
+            const isLiked = localStorage.getItem("liked_" + item.title) ? 'liked' : '';
+            const limit = 2;
+            
+            let badgeClass = 'bg-general';
+            if (item.category.includes('ด่วน') || item.category.includes('สำคัญ')) badgeClass = 'bg-urgent';
+            else if (item.category.includes('การเรียน')) badgeClass = 'bg-study';
+            else if (item.category.includes('เปิดประเด็น')) badgeClass = 'bg-topic';
+            else if (item.category.includes('กิจกรรม')) badgeClass = 'bg-activity';
+
+            html += `
+            <div class="news-card">
+                <button class="delete-btn" onclick="deletePost('${item.title.replace(/'/g, "\\'")}')"><i class="fas fa-trash-alt"></i></button>
+                <span class="badge ${badgeClass}">${item.category}</span>
+                <h3 style="margin: 5px 0 10px 0; font-weight: 500;">${item.title}</h3>
+                <p style="white-space: pre-wrap; font-size: 0.95rem; margin-bottom: 12px;">${item.content}</p>
+                
+                ${item.image ? `<img src="${item.image}" class="post-img">` : ''}
+
+                <div style="font-size: 13px; color: var(--text-sub); margin: 12px 0 8px 0;">โดย <span style="font-weight: 500;">${item.author}</span></div>
+                
+                <div class="action-bar">
+                    <button class="action-btn ${isLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)">
+                        <i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})
+                    </button>
+                    <button class="action-btn" onclick="document.getElementById('input-${id}').focus()">
+                        <i class="fas fa-comment"></i> ตอบกลับ (${comments.length})
+                    </button>
+                </div>
+
+                <div class="comment-section">
+                    <div id="comments-container-${id}">
+                        ${comments.length > limit ? `
+                            <div id="view-more-${id}" onclick="showMoreComments('${id}')" style="color:var(--primary); font-size:13px; cursor:pointer; margin-bottom:10px; font-weight:500;">ดูคอมเมนต์ก่อนหน้า...</div>
+                            <div id="old-comments-${id}" style="display: none;">
+                                ${comments.slice(0, -limit).map(c => renderCommentRow(c)).join('')}
+                            </div>
+                        ` : ''}
+                        ${comments.slice(-limit).map(c => renderCommentRow(c)).join('')}
+                    </div>
+                    <div class="comment-box" style="display:flex; gap:8px; margin-top:10px;">
+                        <input type="text" id="name-${id}" value="${myName}" style="width:80px; margin:0;" placeholder="ชื่อ">
+                        <input type="text" id="input-${id}" style="margin:0;" placeholder="แสดงความเห็น...">
+                        <button class="btn-post" style="padding:0 15px;" onclick="sendCommentNew('${item.title.replace(/'/g, "\\'")}', '${id}')"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>`;
+        });
+        document.getElementById('news-container').innerHTML = html || "ยังไม่มีข่าวสารในขณะนี้";
+    }
+
+    function renderCommentRow(c) {
+        const color = getColorFromName(c.commenter);
+        return `
+            <div class="comment-bubble">
+                <div style="background:${color}; color:white; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; flex-shrink:0; font-weight:bold;">${c.commenter.charAt(0)}</div>
+                <div class="bubble-text"><b style="color:${color};">${c.commenter}</b>: ${c.text}</div>
+            </div>`;
+    }
+
+    async function sendPost() {
+        const author = document.getElementById('author').value.trim();
+        const title = document.getElementById('title').value.trim();
+        const content = document.getElementById('content').value;
+        const category = document.getElementById('category').value;
+        const file = document.getElementById('fileInput').files[0];
+
+        if(!author || !title) return Swal.fire({ icon: 'warning', title: 'ข้อมูลไม่ครบ', text: 'กรุณากรอกชื่อและหัวข้อด้วยครับ' });
+        
+        Swal.fire({ title: 'กำลังโพสต์...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+        let imgUrl = "";
+        if (file) {
+            const fd = new FormData(); fd.append("image", file);
             try {
-                const resp = await fetch(scriptUrl);
-                allNews = await resp.json();
-                renderNews(allNews);
-            } catch(e) { console.error("โหลดข้อมูลล้มเหลว:", e); }
+                const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: fd });
+                const json = await res.json();
+                if(json.success) imgUrl = json.data.url;
+            } catch(e) {}
         }
 
-        function renderNews(data) {
-            let html = '';
-            const myStoredName = localStorage.getItem("myName") || "e";
+        await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, category, imageLink: imgUrl, token: userToken }) });
+        localStorage.setItem("myName", author);
+        
+        Swal.fire({ icon: 'success', title: 'โพสต์สำเร็จ!', showConfirmButton: false, timer: 1500, iconColor: '#1877f2' }).then(() => location.reload());
+    }
 
-            [...data].reverse().forEach((item, index) => {
-                // แก้ไขการเลือกสี Badge ให้รองรับหมวดใหม่
-                let badgeClass = 'bg-general';
-                if (item.category.includes('ด่วน')) badgeClass = 'bg-urgent';
-                else if (item.category.includes('สำคัญ')) badgeClass = 'bg-important';
-                else if (item.category.includes('เปิดประเด็น')) badgeClass = 'bg-topic';
-                else if (item.category.includes('การเรียน')) badgeClass = 'bg-study';
-                else if (item.category.includes('กิจกรรม')) badgeClass = 'bg-activity';
+    async function likePost(title, btn) {
+        if (localStorage.getItem("liked_" + title)) return;
+        btn.classList.add('liked');
+        localStorage.setItem("liked_" + title, "true");
+        await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'like', title }) });
+        loadNews();
+    }
 
-                const hasLiked = localStorage.getItem("liked_" + item.title) ? 'liked' : '';
-                const id = `post-${index}`;
-                const isOwner = (item.author === localStorage.getItem("myName"));
-                const deleteBtn = isOwner ? `<button onclick="deletePost('${item.title.replace(/'/g, "\\'")}')" style="position: absolute; top: 15px; right: 15px; color: #ffbcbc; background: none; border: none; cursor: pointer; font-size: 1.1em;" title="ลบโพสต์นี้"><i class="fas fa-trash-alt"></i></button>` : '';
+    async function deletePost(title) {
+        const res = await Swal.fire({
+            title: 'คุณต้องการลบโพสต์นี้?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ff4d4f',
+            cancelButtonColor: '#65676b',
+            confirmButtonText: 'ลบเลย',
+            cancelButtonText: 'ยกเลิก',
+            reverseButtons: true
+        });
 
-                html += `
-                <div class="news-card" style="position: relative;">
-                    ${deleteBtn}
-                    <span class="badge ${badgeClass}">${item.category}</span>
-                    <h3 style="margin:5px 0; padding-right: 30px;">${item.title}</h3>
-                    <p style="white-space: pre-wrap;">${item.content}</p>
-                    ${item.image ? `<img src="${item.image}" class="post-img" loading="lazy">` : ''}
-                    <div style="font-size:0.8em; color:var(--text-sub)">โดย ${item.author}</div>
-                    <div class="action-bar">
-                        <button class="action-btn ${hasLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)">
-                            <i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})
-                        </button>
-                        <button class="action-btn" onclick="document.getElementById('input-${id}').focus()">
-                            <i class="fas fa-comment"></i> ตอบกลับ
-                        </button>
-                    </div>
-                    <div class="comment-section">
-                        <div id="comments-${id}">${(item.comments || []).map(c => `<div class="comment-item"><b style="color:var(--primary)">${c.commenter}:</b> ${c.text}</div>`).join('')}</div>
-                        <div class="comment-box">
-                            <input type="text" id="name-${id}" value="${myStoredName}" class="input-name-e">
-                            <input type="text" id="input-${id}" placeholder="พิมพ์ข้อความ..." class="input-msg">
-                            <button class="btn-send" onclick="sendCommentNew('${item.title.replace(/'/g, "\\'")}', '${id}')"><i class="fas fa-paper-plane"></i></button>
-                        </div>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('news-container').innerHTML = html || "กำลังรอข้อมูล...";
-        }
-
-        async function deletePost(title) {
-            if(!confirm("เพื่อนแน่ใจนะว่าจะลบโพสต์นี้?")) return;
-            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, username: localStorage.getItem("myName") }) });
-            location.reload();
-        }
-
-        async function sendCommentNew(title, id) {
-            const commenter = document.getElementById(`name-${id}`).value || "e";
-            const text = document.getElementById(`input-${id}`).value.trim();
-            if(!text) return;
-            localStorage.setItem("myName", commenter);
-            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'comment', title, commenter, text }) });
-            loadNews();
-        }
-
-        async function sendPost() {
-            const author = document.getElementById('author').value.trim();
-            const title = document.getElementById('title').value.trim();
-            const content = document.getElementById('content').value;
-            const category = document.getElementById('category').value;
-            const fileInput = document.getElementById('fileInput');
-            if(!author || !title) return alert("กรุณาระบุชื่อและหัวข้อครับ");
-            const btn = document.getElementById('postBtn');
-            btn.disabled = true; btn.innerText = "กำลังโพสต์...";
-            let imageUrl = "";
-            if (fileInput.files.length > 0) {
-                const formData = new FormData();
-                formData.append("image", fileInput.files[0]);
-                const imgResp = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });
-                const imgResult = await imgResp.json();
-                if(imgResult.success) imageUrl = imgResult.data.url;
+        if (res.isConfirmed) {
+            Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            const resp = await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, token: userToken }) });
+            if (await resp.text() === "Success") {
+                Swal.fire({ icon: 'success', title: 'ลบเรียบร้อย', showConfirmButton: false, timer: 1000 }).then(() => location.reload());
+            } else {
+                Swal.fire({ icon: 'error', title: 'ไม่สามารถลบได้', text: 'คุณไม่ใช่เจ้าของโพสต์นี้', confirmButtonColor: '#1877f2' });
             }
-            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, category, username: author, imageLink: imageUrl }) });
-            localStorage.setItem("myName", author);
-            location.reload();
         }
+    }
 
-        async function likePost(title, btn) {
-            if (localStorage.getItem("liked_" + title)) return;
-            btn.classList.add('liked');
-            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'like', title }) });
-            localStorage.setItem("liked_" + title, "true");
-            loadNews();
-        }
+    async function sendCommentNew(title, id) {
+        const commenter = document.getElementById(`name-${id}`).value.trim() || "ไม่ระบุชื่อ";
+        const text = document.getElementById(`input-${id}`).value.trim();
+        if(!text) return;
+        localStorage.setItem("myName", commenter);
+        await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'comment', title, commenter, text }) });
+        loadNews();
+    }
 
-        function filterNews(cat, btn) {
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            btn.classList.add('active');
-            renderNews(cat === 'ทั้งหมด' ? allNews : allNews.filter(i => i.category === cat));
-        }
+    function filterNews(cat, btn) {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        btn.classList.add('active');
+        renderNews(cat === 'ทั้งหมด' ? allNews : allNews.filter(i => i.category === cat));
+    }
 
-        function searchNews() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            renderNews(allNews.filter(i => i.title.toLowerCase().includes(term) || i.content.toLowerCase().includes(term)));
-        }
-
-        function toggleDarkMode() { applyDarkMode(!document.body.classList.contains('dark-mode')); }
-        function applyDarkMode(isDark) {
-            document.body.classList.toggle('dark-mode', isDark);
-            document.getElementById('darkText').innerText = isDark ? "โหมดสว่าง" : "โหมดมืด";
-            document.getElementById('darkIcon').className = isDark ? "fas fa-sun" : "fas fa-moon";
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-        }
+    window.onload = initApp;
     </script>
 </body>
 </html>
