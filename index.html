@@ -4,7 +4,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Board</title>
+    <title>โรงเรียนบัวเชด - Bua Ched Board</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
@@ -19,53 +19,53 @@
         }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; display: flex; min-height: 100vh; transition: 0.3s; color: var(--text-main); }
         
-        /* Sidebar */
+        /* Sidebar - ปรับให้รองรับมือถือ */
         .sidebar { width: 260px; background: var(--sidebar); color: #fff; padding: 25px; position: sticky; top: 0; height: 100vh; box-sizing: border-box; flex-shrink: 0; }
-        .nav-item { padding: 12px 18px; border-radius: 12px; cursor: pointer; margin-bottom: 8px; color: #cbd5e1; display: flex; align-items: center; gap: 12px; transition: 0.2s; }
-        .nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .nav-item { padding: 12px 18px; border-radius: 12px; cursor: pointer; margin-bottom: 8px; color: #cbd5e1; display: flex; align-items: center; gap: 12px; }
         .nav-item.active { background: var(--primary); color: white; }
 
-        .main-content { flex: 1; padding: 30px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
+        .main-content { flex: 1; padding: 30px; display: flex; flex-direction: column; align-items: center; width: 100%; overflow-x: hidden; }
+        .box, .news-card { background: var(--card-bg); border-radius: 16px; width: 100%; max-width: 650px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid var(--border); box-sizing: border-box; position: relative; }
         
-        /* Post Box */
-        .box { background: var(--card-bg); border-radius: 16px; width: 100%; max-width: 650px; box-shadow: var(--shadow); margin-bottom: 25px; overflow: hidden; border: 1px solid var(--border); }
-        .box-header { background: var(--primary); color: white; padding: 15px 25px; font-weight: 500; }
-        .box-body { padding: 20px 25px; }
+        /* โหมดมือถือ (Mobile) */
+        @media (max-width: 768px) {
+            body { flex-direction: column; } /* เปลี่ยนจากวางข้างกัน เป็นวางต่อกันบนล่าง */
+            .sidebar { 
+                width: 100%; height: auto; position: relative; padding: 10px; 
+                display: flex; overflow-x: auto; /* เมนูเลื่อนซ้ายขวาได้ */
+                white-space: nowrap; gap: 8px;
+            }
+            .sidebar h2 { display: none; } /* ซ่อนชื่อในเมนูเพื่อไม่ให้เกะกะ */
+            .nav-item { margin-bottom: 0; padding: 8px 15px; font-size: 14px; flex-shrink: 0; }
+            .main-content { padding: 15px; }
+            .box-body, .news-card { padding: 15px; }
+        }
 
-        /* News Card */
-        .news-card { background: var(--card-bg); padding: 20px; border-radius: 16px; width: 100%; max-width: 650px; box-shadow: var(--shadow); margin-bottom: 20px; position: relative; border: 1px solid var(--border); overflow: hidden; box-sizing: border-box; }
-        .post-img { width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius: 10px; margin: 12px 0; display: block; }
-        
-        input, select, textarea { width: 100%; padding: 12px 15px; margin: 8px 0; border: 1px solid var(--border); border-radius: 10px; font-family: 'Kanit'; outline: none; box-sizing: border-box; background: var(--bg); color: var(--text-main); }
-        .btn-post { padding: 10px 35px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 500; }
+        .post-img { width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius: 10px; margin: 12px 0; }
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; margin-bottom: 8px; display: inline-block; }
+        .bg-urgent { background: #fff1f0; color: #ff4d4f; border: 1.5px solid #ff4d4f; }
+        .bg-study { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; }
+        .bg-topic { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; }
+        .bg-activity { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
+        .bg-general { background: #f5f5f5; color: #595959; border: 1px solid #d9d9d9; }
 
-        /* Badges */
-        .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; margin-bottom: 10px; display: inline-block; }
-        .bg-urgent { background: #fff1f0; color: #ff4d4f; border: 1.5px solid #ff4d4f; } /* ด่วน/สำคัญ */
-        .bg-study { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; } /* การเรียน */
-        .bg-topic { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; } /* เปิดประเด็น */
-        .bg-activity { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; } /* กิจกรรม */
-        .bg-general { background: #f5f5f5; color: #595959; border: 1px solid #d9d9d9; } /* ทั่วไป */
-
-        /* Actions */
-        .action-bar { display: flex; gap: 15px; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 8px; }
+        .action-bar { display: flex; gap: 15px; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 5px; }
         .action-btn { background: none; border: none; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 14px; font-family: 'Kanit'; }
-        .action-btn.liked { color: #ff4d4f !important; font-weight: 600; }
-        .action-btn.liked i { animation: heartBeat 0.3s ease; }
-        @keyframes heartBeat { 0% {transform:scale(1)} 50% {transform:scale(1.3)} 100% {transform:scale(1)} }
+        .action-btn.liked { color: #ff4d4f !important; font-weight: bold; }
 
-        /* Comment Bubble */
-        .comment-section { margin-top: 15px; background: rgba(0,0,0,0.03); padding: 15px; border-radius: 12px; }
-        .comment-bubble { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
-        .bubble-text { background: var(--card-bg); padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; flex: 1; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-        .delete-btn { position: absolute; top: 15px; right: 15px; color: #ffbcbc; cursor: pointer; background: none; border: none; font-size: 18px; transition: 0.2s; }
-        .delete-btn:hover { color: #ff4d4f; }
+        .comment-section { margin-top: 15px; background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; }
+        .comment-bubble { display: flex; gap: 10px; margin-bottom: 8px; }
+        .bubble-text { background: var(--card-bg); padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; flex: 1; }
+        .delete-btn { position: absolute; top: 15px; right: 15px; color: #ffbcbc; cursor: pointer; background: none; border: none; font-size: 18px; }
+
+        input, select, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid var(--border); border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; background: var(--bg); color: var(--text-main); }
+        .btn-post { padding: 10px 25px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 500; }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2 style="margin-bottom: 30px;">SCHOOL BCW Board</h2>
+        <h2>SCHOOL BCW Board</h2>
         <div class="nav-item active" onclick="filterNews('ทั้งหมด', this)"><i class="fas fa-layer-group"></i> ทั้งหมด</div>
         <div class="nav-item" onclick="filterNews('🚨 ด่วน', this)"><i class="fas fa-exclamation-triangle"></i> ด่วน</div>
         <div class="nav-item" onclick="filterNews('📚 การเรียน', this)"><i class="fas fa-book"></i> การเรียน</div>
@@ -73,16 +73,16 @@
         <div class="nav-item" onclick="filterNews('📌 สำคัญ', this)"><i class="fas fa-thumbtack"></i> สำคัญ</div>
         <div class="nav-item" onclick="filterNews('🔥 เปิดประเด็น', this)"><i class="fas fa-fire-alt"></i> เปิดประเด็น</div>
         <div class="nav-item" onclick="filterNews('⚽ กิจกรรม', this)"><i class="fas fa-trophy"></i> กิจกรรม</div>
-        <div class="nav-item" onclick="toggleDarkMode()" style="margin-top: auto;"><i class="fas fa-adjust"></i> เปลี่ยนโหมด</div>
+        <div class="nav-item" onclick="toggleDarkMode()"><i class="fas fa-adjust"></i> สลับโหมด</div>
     </div>
 
     <div class="main-content">
         <div class="box">
-            <div class="box-header"><i class="fas fa-edit"></i> กระดานข่าวโรงเรียนบัวเชดวิทยา</div>
-            <div class="box-body">
-                <input type="text" id="author" placeholder="ชื่อของคุณ...">
+            <div style="background:var(--primary); color:white; padding:12px 20px; font-weight:500; border-radius:16px 16px 0 0;">กระดานข่าวโรงเรียนบัวเชดวิทยา</div>
+            <div style="padding: 15px 20px;">
+                <input type="text" id="author" placeholder="ชื่อเล่น/ชื่อของคุณ...">
                 <div style="display: flex; gap: 8px;">
-                    <select id="category" style="flex: 1.2;">
+                    <select id="category" style="flex: 1;">
                         <option value="📢 ทั่วไป">📢 ทั่วไป</option>
                         <option value="🚨 ด่วน">🚨 ด่วน</option>
                         <option value="📚 การเรียน">📚 การเรียน</option>
@@ -90,12 +90,12 @@
                         <option value="🔥 เปิดประเด็น">🔥 เปิดประเด็น</option>
                         <option value="⚽ กิจกรรม">⚽ กิจกรรม</option>
                     </select>
-                    <input type="text" id="title" placeholder="หัวข้อข่าว..." style="flex: 2;">
+                    <input type="text" id="title" placeholder="หัวข้อ..." style="flex: 1.5;">
                 </div>
-                <textarea id="content" rows="2" placeholder="รายละเอียดข่าวสาร..."></textarea>
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <label for="fileInput" style="cursor: pointer; color: var(--primary); font-size: 14px;"><i class="fas fa-image"></i> เพิ่มรูปภาพ</label>
-                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                <textarea id="content" rows="2" placeholder="เล่าเรื่องที่นี่..."></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="fileInput" style="cursor:pointer; color:var(--primary); font-size:14px;"><i class="fas fa-image"></i> ใส่รูป</label>
+                    <input type="file" id="fileInput" accept="image/*" style="display:none;">
                     <button class="btn-post" onclick="sendPost()">โพสต์เลย</button>
                 </div>
             </div>
@@ -110,7 +110,6 @@
     let userToken = localStorage.getItem("user_token") || "TK-" + Math.random().toString(36).substr(2, 9);
     localStorage.setItem("user_token", userToken);
 
-    // --- ฟังก์ชันสุ่มสีตามชื่อ ---
     function getColorFromName(name) {
         const colors = ['#1877f2', '#f02849', '#2abba7', '#f7b928', '#9360f7', '#ff7e29', '#1098ad'];
         let hash = 0;
@@ -118,7 +117,6 @@
         return colors[Math.abs(hash) % colors.length];
     }
 
-    // --- เริ่มต้นระบบ (รวม Dark Mode) ---
     function initApp() {
         if (localStorage.getItem("darkMode") === "true") document.body.classList.add('dark-mode');
         loadNews();
@@ -134,7 +132,7 @@
             const resp = await fetch(scriptUrl);
             allNews = await resp.json();
             renderNews(allNews);
-        } catch(e) { console.error("Load Error"); }
+        } catch(e) {}
     }
 
     function showMoreComments(id) {
@@ -160,49 +158,49 @@
             html += `
             <div class="news-card">
                 <button class="delete-btn" onclick="deletePost('${item.title.replace(/'/g, "\\'")}')"><i class="fas fa-trash-alt"></i></button>
-                <span class="badge ${badgeClass}">${item.category}</span>
-                <h3 style="margin: 5px 0 10px 0; font-weight: 500;">${item.title}</h3>
-                <p style="white-space: pre-wrap; font-size: 0.95rem; margin-bottom: 12px;">${item.content}</p>
-                
-                ${item.image ? `<img src="${item.image}" class="post-img">` : ''}
-
-                <div style="font-size: 13px; color: var(--text-sub); margin: 12px 0 8px 0;">โดย <span style="font-weight: 500;">${item.author}</span></div>
-                
-                <div class="action-bar">
-                    <button class="action-btn ${isLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)">
-                        <i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})
-                    </button>
-                    <button class="action-btn" onclick="document.getElementById('input-${id}').focus()">
-                        <i class="fas fa-comment"></i> ตอบกลับ (${comments.length})
-                    </button>
-                </div>
-
-                <div class="comment-section">
-                    <div id="comments-container-${id}">
-                        ${comments.length > limit ? `
-                            <div id="view-more-${id}" onclick="showMoreComments('${id}')" style="color:var(--primary); font-size:13px; cursor:pointer; margin-bottom:10px; font-weight:500;">ดูคอมเมนต์ก่อนหน้า...</div>
-                            <div id="old-comments-${id}" style="display: none;">
-                                ${comments.slice(0, -limit).map(c => renderCommentRow(c)).join('')}
-                            </div>
-                        ` : ''}
-                        ${comments.slice(-limit).map(c => renderCommentRow(c)).join('')}
+                <div style="padding:20px;">
+                    <span class="badge ${badgeClass}">${item.category}</span>
+                    <h3 style="margin: 5px 0 10px 0;">${item.title}</h3>
+                    <p style="white-space: pre-wrap; font-size: 0.95rem; margin-bottom: 12px;">${item.content}</p>
+                    ${item.image ? `<img src="${item.image}" class="post-img">` : ''}
+                    <div style="font-size: 13px; color: var(--text-sub); margin-bottom: 12px;">โดย <b>${item.author}</b></div>
+                    
+                    <div class="action-bar">
+                        <button class="action-btn ${isLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)">
+                            <i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})
+                        </button>
+                        <button class="action-btn" onclick="document.getElementById('input-${id}').focus()">
+                            <i class="fas fa-comment"></i> ตอบกลับ (${comments.length})
+                        </button>
                     </div>
-                    <div class="comment-box" style="display:flex; gap:8px; margin-top:10px;">
-                        <input type="text" id="name-${id}" value="${myName}" style="width:80px; margin:0;" placeholder="ชื่อ">
-                        <input type="text" id="input-${id}" style="margin:0;" placeholder="แสดงความเห็น...">
-                        <button class="btn-post" style="padding:0 15px;" onclick="sendCommentNew('${item.title.replace(/'/g, "\\'")}', '${id}')"><i class="fas fa-paper-plane"></i></button>
+
+                    <div class="comment-section">
+                        <div id="comments-container-${id}">
+                            ${comments.length > limit ? `
+                                <div id="view-more-${id}" onclick="showMoreComments('${id}')" style="color:var(--primary); font-size:13px; cursor:pointer; margin-bottom:10px;">ดูคอมเมนต์ก่อนหน้า...</div>
+                                <div id="old-comments-${id}" style="display: none;">
+                                    ${comments.slice(0, -limit).map(c => renderCommentRow(c)).join('')}
+                                </div>
+                            ` : ''}
+                            ${comments.slice(-limit).map(c => renderCommentRow(c)).join('')}
+                        </div>
+                        <div style="display:flex; gap:8px; margin-top:10px;">
+                            <input type="text" id="name-${id}" value="${myName}" style="width:70px; margin:0; padding:8px;" placeholder="ชื่อ">
+                            <input type="text" id="input-${id}" style="margin:0; padding:8px;" placeholder="ตอบกลับ...">
+                            <button class="btn-post" style="padding:0 12px;" onclick="sendCommentNew('${item.title.replace(/'/g, "\\'")}', '${id}')"><i class="fas fa-paper-plane"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>`;
         });
-        document.getElementById('news-container').innerHTML = html || "ยังไม่มีข่าวสารในขณะนี้";
+        document.getElementById('news-container').innerHTML = html || "ไม่มีข่าว";
     }
 
     function renderCommentRow(c) {
         const color = getColorFromName(c.commenter);
         return `
             <div class="comment-bubble">
-                <div style="background:${color}; color:white; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; flex-shrink:0; font-weight:bold;">${c.commenter.charAt(0)}</div>
+                <div style="background:${color}; color:white; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; flex-shrink:0;">${c.commenter.charAt(0)}</div>
                 <div class="bubble-text"><b style="color:${color};">${c.commenter}</b>: ${c.text}</div>
             </div>`;
     }
@@ -213,26 +211,60 @@
         const content = document.getElementById('content').value;
         const category = document.getElementById('category').value;
         const file = document.getElementById('fileInput').files[0];
-
-        if(!author || !title) return Swal.fire({ icon: 'warning', title: 'ข้อมูลไม่ครบ', text: 'กรุณากรอกชื่อและหัวข้อด้วยครับ' });
-        
+        if(!author || !title) return Swal.fire('ข้อมูลไม่ครบ', '', 'warning');
         Swal.fire({ title: 'กำลังโพสต์...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-
         let imgUrl = "";
         if (file) {
             const fd = new FormData(); fd.append("image", file);
-            try {
-                const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: fd });
-                const json = await res.json();
-                if(json.success) imgUrl = json.data.url;
-            } catch(e) {}
+            const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: fd });
+            const json = await res.json();
+            if(json.success) imgUrl = json.data.url;
         }
-
         await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, category, imageLink: imgUrl, token: userToken }) });
         localStorage.setItem("myName", author);
-        
-        Swal.fire({ icon: 'success', title: 'โพสต์สำเร็จ!', showConfirmButton: false, timer: 1500, iconColor: '#1877f2' }).then(() => location.reload());
+        Swal.fire({ icon: 'success', title: 'โพสต์แล้ว!', showConfirmButton: false, timer: 1500 }).then(() => location.reload());
     }
+
+    async function deletePost(title) {
+    const res = await Swal.fire({
+        title: 'ยืนยันการลบโพสต์?',
+        text: "เมื่อลบแล้วข้อมูลจะหายไปถาวร",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33', // สีแดงปุ่มลบ
+        cancelButtonColor: '#6e7881',
+        confirmButtonText: '<i class="fas fa-trash-alt"></i> ยืนยันลบ',
+        cancelButtonText: 'ยกเลิก',
+        reverseButtons: true,
+        background: document.body.classList.contains('dark-mode') ? '#1e293b' : '#fff',
+        color: document.body.classList.contains('dark-mode') ? '#f1f5f9' : '#1c1e21'
+    });
+
+    if (res.isConfirmed) {
+        Swal.fire({ 
+            title: 'กำลังลบ...', 
+            allowOutsideClick: false, 
+            didOpen: () => Swal.showLoading() 
+        });
+        
+        try {
+            const resp = await fetch(scriptUrl, { 
+                method: 'POST', 
+                body: JSON.stringify({ action: 'delete', title, token: userToken }) 
+            });
+            const result = await resp.text();
+            
+            if (result === "Success") {
+                Swal.fire({ icon: 'success', title: 'ลบสำเร็จ', showConfirmButton: false, timer: 1000 })
+                .then(() => location.reload());
+            } else {
+                Swal.fire('ขออภัย!', 'คุณไม่ใช่เจ้าของโพสต์นี้ จึงไม่สามารถลบได้', 'error');
+            }
+        } catch(e) {
+            Swal.fire('ผิดพลาด', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'error');
+        }
+    }
+}
 
     async function likePost(title, btn) {
         if (localStorage.getItem("liked_" + title)) return;
@@ -242,31 +274,8 @@
         loadNews();
     }
 
-    async function deletePost(title) {
-        const res = await Swal.fire({
-            title: 'คุณต้องการลบโพสต์นี้?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ff4d4f',
-            cancelButtonColor: '#65676b',
-            confirmButtonText: 'ลบเลย',
-            cancelButtonText: 'ยกเลิก',
-            reverseButtons: true
-        });
-
-        if (res.isConfirmed) {
-            Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            const resp = await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, token: userToken }) });
-            if (await resp.text() === "Success") {
-                Swal.fire({ icon: 'success', title: 'ลบเรียบร้อย', showConfirmButton: false, timer: 1000 }).then(() => location.reload());
-            } else {
-                Swal.fire({ icon: 'error', title: 'ไม่สามารถลบได้', text: 'คุณไม่ใช่เจ้าของโพสต์นี้', confirmButtonColor: '#1877f2' });
-            }
-        }
-    }
-
     async function sendCommentNew(title, id) {
-        const commenter = document.getElementById(`name-${id}`).value.trim() || "ไม่ระบุชื่อ";
+        const commenter = document.getElementById(`name-${id}`).value.trim() || "คนบัวเชด";
         const text = document.getElementById(`input-${id}`).value.trim();
         if(!text) return;
         localStorage.setItem("myName", commenter);
