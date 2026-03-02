@@ -4,7 +4,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โรงเรียนบัวเชด - Bua Ched Board</title>
+    <title>โรงเรียนบัวเชดวิทยา - Bua Ched Board</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
@@ -44,8 +44,9 @@
         .bg-study { background: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
         .bg-activity { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
         .bg-love { background: #fff0f6; color: #eb2f96; border: 1px solid #ffadd2; }
-        .bg-vent { background: #fff2e8; color: #fa541c; border: 1px solid #ffbb96; }
+        .bg-topic { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; }
         .bg-general { background: #f5f5f5; color: #595959; border: 1px solid #d9d9d9; }
+        .bg-guide { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; }
 
         .action-bar { display: flex; gap: 15px; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 5px; }
         .action-btn { background: none; border: none; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 14px; font-family: 'Kanit'; }
@@ -61,6 +62,35 @@
         
         #sub_cat_box { display: none; margin-top: 5px; }
         .sub-select { border-style: dashed; border-color: var(--primary); }
+
+        /* ส่วน UI ย่อ/ขยาย และ Welcome Box */
+        .welcome-box {
+            background: linear-gradient(135deg, #1877f2 0%, #0052cc 100%);
+            color: white; border: none; transition: all 0.3s ease;
+        }
+        body.dark-mode .welcome-box {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border);
+        }
+        .welcome-content { padding: 25px; }
+        
+        .box-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .toggle-icon { transition: transform 0.3s ease; opacity: 0.8; }
+        
+        /* สไตล์ตอนกดย่อกล่อง */
+        .is-collapsed .box-body, .is-collapsed .guide-body { display: none; }
+        .is-collapsed .toggle-icon { transform: rotate(-180deg); }
+        .is-collapsed { margin-bottom: 10px; }
+
+        .how-to-card { border-left: 5px solid #ff9800; transition: all 0.3s ease; }
+        .guide-steps { margin-top: 15px; }
+        .step { 
+            display: flex; align-items: center; gap: 15px; margin-bottom: 12px; padding: 10px;
+            background: rgba(0,0,0,0.02); border-radius: 8px;
+        }
+        .step i { color: #1877f2; font-size: 1.2rem; width: 25px; text-align: center; }
+        .step span { font-size: 0.9rem; }
+        body.dark-mode .step { background: rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
@@ -108,6 +138,45 @@
                 </div>
             </div>
         </div>
+
+        <div id="welcomeBox" class="box welcome-box">
+            <div class="welcome-content">
+                <div class="box-header" onclick="toggleBox('welcomeBox')">
+                    <h3 style="margin:0;"><i class="fas fa-school"></i> ถึง... เพื่อน ๆ ชาวบัวเชดวิทยา</h3>
+                    <i class="fas fa-chevron-up toggle-icon"></i>
+                </div>
+                <div class="box-body" style="margin-top: 15px;">
+                    <p>"เว็บบอร์ดนี้คือพื้นที่ของพวกเรา เว็บบอร์ดถูกสร้างขึ้นมาเพื่อให้เป็นพื้นที่รวบรวมความทรงจำและข่าวสารภายในโรงเรียน ไม่ว่าจะเป็นเรื่องเรียน เรื่องเล่น หรือเรื่องราวประทับใจ แวะมาอัปเดตและพูดคุยกันได้เสมอ เพราะที่นี่คือพื้นที่ที่สร้างขึ้น <b>เพื่อนักเรียนทุกคน</b>"</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="guideBox" class="news-card how-to-card">
+            <div style="padding:20px;">
+                <div class="box-header" onclick="toggleBox('guideBox')">
+                    <span class="badge bg-guide"><i class="fas fa-info-circle"></i> วิธีใช้งานบอร์ด</span>
+                    <i class="fas fa-chevron-up toggle-icon"></i>
+                </div>
+                <div class="guide-body">
+                    <h3 style="margin: 15px 0 10px 0;">เริ่มต้นใช้งาน BCW Board ยังไงดี? 🤔</h3>
+                    <div class="guide-steps">
+                        <div class="step">
+                            <i class="fas fa-edit"></i>
+                            <span><b>เขียนโพสต์:</b> ใส่ชื่อ หัวข้อ และเลือกหมวดหมู่ให้ตรงกับเรื่องที่จะเล่า</span>
+                        </div>
+                        <div class="step">
+                            <i class="fas fa-filter"></i>
+                            <span><b>เลือกดูหมวดหมู่:</b> ใช้เมนูฝั่งซ้ายเพื่อกรองดูเฉพาะเรื่องที่สนใจ</span>
+                        </div>
+                        <div class="step">
+                            <i class="fas fa-heart"></i>
+                            <span><b>ส่งต่อพลังบวก:</b> กดถูกใจ หรือคอมเมนต์พูดคุยกับเพื่อนๆ อย่างสุภาพนะ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="news-container" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
     </div>
 
@@ -117,6 +186,22 @@
     let allNews = [];
     let userToken = localStorage.getItem("user_token") || "TK-" + Math.random().toString(36).substr(2, 9);
     localStorage.setItem("user_token", userToken);
+
+    // ฟังก์ชัน ย่อ-ขยาย กล่อง
+    function toggleBox(id) {
+        const el = document.getElementById(id);
+        const isCollapsed = el.classList.toggle('is-collapsed');
+        localStorage.setItem('collapsed_' + id, isCollapsed);
+    }
+
+    // เช็คสถานะการย่อกล่องตอนโหลด
+    function checkBoxesStatus() {
+        ['welcomeBox', 'guideBox'].forEach(id => {
+            if (localStorage.getItem('collapsed_' + id) === 'true') {
+                document.getElementById(id).classList.add('is-collapsed');
+            }
+        });
+    }
 
     function updateSubCategories(mainCat) {
         const sub = document.getElementById('sub_category');
@@ -149,6 +234,7 @@
 
     function initApp() {
         if (localStorage.getItem("darkMode") === "true") document.body.classList.add('dark-mode');
+        checkBoxesStatus();
         loadNews();
     }
 
@@ -178,7 +264,7 @@
             if (item.category.includes('🚨')) badgeClass = 'bg-urgent';
             else if (item.category.includes('📚')) badgeClass = 'bg-study';
             else if (item.category.includes('⚽')) badgeClass = 'bg-activity';
-            if (item.category.includes('✨')) badgeClass = 'bg-love'; 
+            else if (item.category.includes('✨')) badgeClass = 'bg-love'; 
             else if (item.category.includes('🗣️')) badgeClass = 'bg-topic'; 
 
             html += `
@@ -227,8 +313,6 @@
         const file = document.getElementById('fileInput').files[0];
 
         if(!author || !title) return Swal.fire('ข้อมูลไม่ครบ', '', 'warning');
-        
-        // --- อนิเมชัน Loading (คงเดิม) ---
         Swal.fire({ title: 'กำลังโพสต์...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
         
         let imgUrl = "";
@@ -243,7 +327,6 @@
         await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, category: finalCategory, imageLink: imgUrl, token: userToken }) });
         
         localStorage.setItem("myName", author);
-        // --- อนิเมชัน Success (คงเดิม) ---
         Swal.fire({ icon: 'success', title: 'โพสต์แล้ว!', showConfirmButton: false, timer: 1500 }).then(() => location.reload());
     }
 
@@ -263,15 +346,11 @@
         });
 
         if (res.isConfirmed) {
-            // --- อนิเมชัน Loading ตอนลบ (คงเดิม) ---
             Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            
             try {
                 const resp = await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, token: userToken }) });
                 const result = await resp.text();
-                
                 if (result === "Success") {
-                    // --- อนิเมชัน Success ตอนลบ (คงเดิม) ---
                     Swal.fire({ icon: 'success', title: 'ลบสำเร็จ', showConfirmButton: false, timer: 1000 }).then(() => location.reload());
                 } else {
                     Swal.fire('ขออภัย!', 'คุณไม่ใช่เจ้าของโพสต์นี้ จึงไม่สามารถลบได้', 'error');
@@ -295,11 +374,9 @@
         const textInput = document.getElementById(`input-${id}`);
         const text = textInput.value.trim();
         if(!text || btn.disabled) return;
-
         btn.disabled = true;
         const originalContent = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>'; 
-
         try {
             localStorage.setItem("myName", commenter);
             await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'comment', title, commenter, text }) });
