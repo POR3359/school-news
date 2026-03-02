@@ -4,7 +4,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โรงเรียนบัวเชดวิทยา - Bua Ched Board</title>
+    <title>School - BCW Board</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
@@ -39,9 +39,11 @@
         .post-img { width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius: 10px; margin: 12px 0; }
         .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; margin-bottom: 8px; display: inline-block; }
         
+        /* สีกรอบ Badge */
         .bg-urgent { background: #fff1f0; color: #ff4d4f; border: 1.5px solid #ff4d4f; }
         .bg-study { background: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
         .bg-activity { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
+        .bg-fun { background: #fffbe6; color: #faad14; border: 1px solid #ffe58f; } /* หมวดนันทนาการ */
         .bg-love { background: #fff0f6; color: #eb2f96; border: 1px solid #ffadd2; }
         .bg-topic { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; }
         .bg-general { background: #f5f5f5; color: #595959; border: 1px solid #d9d9d9; }
@@ -62,15 +64,8 @@
         #sub_cat_box { display: none; margin-top: 5px; }
         .sub-select { border-style: dashed; border-color: var(--primary); }
 
-        /* UI ย่อ/ขยาย */
-        .welcome-box {
-            background: linear-gradient(135deg, #1877f2 0%, #0052cc 100%);
-            color: white; border: none; transition: all 0.3s ease;
-        }
-        body.dark-mode .welcome-box {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid var(--border);
-        }
+        .welcome-box { background: linear-gradient(135deg, #1877f2 0%, #0052cc 100%); color: white; border: none; transition: all 0.3s ease; }
+        body.dark-mode .welcome-box { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid var(--border); }
         .welcome-content { padding: 25px; }
         .box-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .toggle-icon { transition: transform 0.3s ease; opacity: 0.8; }
@@ -92,7 +87,7 @@
         <div class="nav-item" onclick="filterNews('🚨 ด่วน', this)"><i class="fas fa-exclamation-triangle"></i> ด่วน / สำคัญ</div>
         <div class="nav-item" onclick="filterNews('📚 การเรียน', this)"><i class="fas fa-book"></i> การเรียน</div>
         <div class="nav-item" onclick="filterNews('⚽ กิจกรรม', this)"><i class="fas fa-trophy"></i> กิจกรรม</div>
-        <div class="nav-item" onclick="filterNews('✨ ความรู้สึก', this)"><i class="fas fa-heart"></i> ความรู้สึก / ความสัมพันธ์</div>
+        <div class="nav-item" onclick="filterNews('🎮 นันทนาการ', this)"><i class="fas fa-gamepad"></i> นันทนาการ</div> <div class="nav-item" onclick="filterNews('✨ ความรู้สึก', this)"><i class="fas fa-heart"></i> ความรู้สึก / ความสัมพันธ์</div>
         <div class="nav-item" onclick="filterNews('🗣️ เปิดประเด็น', this)"><i class="fas fa-comments"></i> เปิดประเด็น</div>
         <div class="nav-item" onclick="filterNews('📢 ทั่วไป', this)"><i class="fas fa-bullhorn"></i> ทั่วไป</div>
         <div class="nav-item" onclick="toggleDarkMode()"><i class="fas fa-adjust"></i> สลับโหมด</div>
@@ -110,6 +105,7 @@
                             <option value="🚨 ด่วน">🚨 ด่วน / สำคัญ</option>
                             <option value="📚 การเรียน">📚 การเรียน</option>
                             <option value="⚽ กิจกรรม">⚽ กิจกรรม / กีฬา</option>
+                            <option value="🎮 นันทนาการ">🎮 นันทนาการ</option>
                             <option value="✨ ความรู้สึก">✨ ความรู้สึก / ความสัมพันธ์</option>
                             <option value="🗣️ เปิดประเด็น">🗣️ เปิดประเด็น</option>
                         </select>
@@ -137,7 +133,7 @@
                     <i class="fas fa-chevron-up toggle-icon"></i>
                 </div>
                 <div class="box-body" style="margin-top: 15px;">
-                    <p>"เว็บบอร์ดนี้คือพื้นที่ของพวกเรา เว็บบอร์ดนี้ถูกสร้างขึ้นมาเพื่อให้เป็นพื้นที่รวบรวมความทรงจำและข่าวสารภายในโรงเรียน ไม่ว่าจะเป็นเรื่องเรียน เรื่องเล่น หรือเรื่องราวประทับใจ แวะมาอัปเดตและพูดคุยกันได้เสมอ เพราะที่นี่คือพื้นที่ที่สร้างขึ้น <b>เพื่อนักเรียนทุกคน</b>"</p>
+                    <p>"" บอร์ดนี้ถูกสร้างขึ้นมาเพื่อให้เป็นพื้นที่รวบรวมความทรงจำและข่าวสารภายในโรงเรียนของเรา ไม่ว่าจะเป็นเรื่องเรียน เรื่องเล่น หรือเรื่องราวประทับใจในรั้วโรงเรียน แวะมาอัปเดตและพูดคุยกันได้เสมอ เพราะที่นี่คือพื้นที่ที่สร้างขึ้น <b>เพื่อนักเรียนทุกคน"</b>"</p>
                 </div>
             </div>
         </div>
@@ -145,14 +141,15 @@
         <div id="guideBox" class="news-card how-to-card">
             <div style="padding:20px;">
                 <div class="box-header" onclick="toggleBox('guideBox')">
-                    <span class="badge bg-guide"><i class="fas fa-info-circle"></i> วิธีใช้งานบอร์ด</span>
+                    <span class="badge bg-guide"><i class="fas fa-heart-circle-check"></i> เริ่มต้นใช้งานด้วยกัน</span>
                     <i class="fas fa-chevron-up toggle-icon"></i>
                 </div>
                 <div class="guide-body">
-                    <h3 style="margin: 15px 0 10px 0;">เริ่มต้นใช้งานยังไงดี? 🤔</h3>
-                    <div class="step"><i class="fas fa-edit"></i><span><b>เขียนโพสต์:</b> ใส่ชื่อ หัวข้อ และเลือกหมวดหมู่</span></div>
-                    <div class="step"><i class="fas fa-filter"></i><span><b>เลือกดูหมวดหมู่:</b> ใช้เมนูฝั่งซ้ายเพื่อกรองดูเรื่องที่สนใจ</span></div>
-                    <div class="step"><i class="fas fa-heart"></i><span><b>ส่งต่อพลังบวก:</b> กดถูกใจ หรือคอมเมนต์คุยกับเพื่อนๆ</span></div>
+                    <h3 style="margin: 15px 0 10px 0;">พื้นที่นี้ใช้งานยังไงนะ? 🤔</h3>
+                    <div class="step"><i class="fas fa-feather-alt"></i><span><b>แบ่งปันเรื่องราวของคุณ:</b> พิมพ์ชื่อ หัวข้อ แล้วเลือกหมวดหมู่ที่ตรงกับความรู้สึกตอนนั้นได้เลย</span></div>
+                    <div class="step"><i class="fas fa-hand-pointer"></i><span><b>เลือกชมตามใจชอบ:</b> แถบเมนูด้านบนมีเรื่องราวหลายมุมรอให้คุณเข้าไปอ่านอยู่นะ</span></div>
+                    <div class="step"><i class="fas fa-mug-hot"></i><span><b>ดูแลกันและกัน:</b> แวะทักทาย ให้กำลังใจ หรือคอมเมนต์ด้วยความใส่ใจ เพื่อบอร์ดที่น่ารักของพวกเราทุกคน</span></div>
+                    <p style="font-size: 0.85rem; color: var(--text-sub); margin-top: 10px; font-style: italic; padding-left: 10px;">*มาช่วยกันทำให้ที่นี่เป็นพื้นที่ดีๆ ของพวกเรานะ</p>
                 </div>
             </div>
         </div>
@@ -186,10 +183,11 @@
         const opts = {
             "🚨 ด่วน": ["🔍 ตามหาของ", "📣 ประกาศด่วน", "⚠️ แจ้งเตือนภัย"],
             "📚 การเรียน": ["✍️ ติวสอบ", "❓ ถามการบ้าน", "📖 แชร์สรุป", "🤝 หาเพื่อนติว"],
-            "⚽ กิจกรรม": ["🎮 เกม", "⚽ กีฬาสี/ชมรม", "🎭 ซ้อมแสดง", "🏆 ผลการแข่งขัน"],
+            "⚽ กิจกรรม": ["🏆 ผลการแข่งขัน", "⚽ กีฬาสี/ชมรม", "🎭 ซ้อมแสดง", "🎸 ชมรมดนตรี", "🎨 ชมรมศิลปะ"],
+            "🎮 นันทนาการ": ["🎵 เพลง/ดนตรี", "🎬 หนัง/ซีรีส์", "🕹️ เกม", "🎨 งานอดิเรก", "📸 คาเฟ่/เที่ยว"],
             "✨ ความรู้สึก": ["💖 ความรัก","😤 ระบาย","🧘 พักใจ","🤝 เพื่อน","😊 ส่งต่อพลังบวก"],
             "🗣️ เปิดประเด็น": ["❓ ตั้งคำถาม", "📌 ประเด็นฮอตในโรงเรียน","🗳️ โพลล์สำรวจ"],
-            "📢 ทั่วไป": ["📸 บรรยากาศ", "🍱 รีวิวอาหาร", "🔮 ดวง/มู", "💬 ชวนคุย"]
+            "📢 ทั่วไป": ["📸 บรรยากาศ", "🍱 รีวิวอาหาร", "🔮 ดวง/มู", "💬 ชวนคุย", "👻 เรื่องเล่าลี้ลับ"]
         };
         if(opts[mainCat]) {
             opts[mainCat].forEach(t => sub.innerHTML += `<option value="${t}">${t}</option>`);
@@ -239,6 +237,7 @@
             if (item.category.includes('🚨')) badgeClass = 'bg-urgent';
             else if (item.category.includes('📚')) badgeClass = 'bg-study';
             else if (item.category.includes('⚽')) badgeClass = 'bg-activity';
+            else if (item.category.includes('🎮')) badgeClass = 'bg-fun';
             else if (item.category.includes('✨')) badgeClass = 'bg-love'; 
             else if (item.category.includes('🗣️')) badgeClass = 'bg-topic'; 
 
