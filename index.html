@@ -19,7 +19,6 @@
         }
         body { font-family: 'Kanit', sans-serif; background: var(--bg); margin: 0; display: flex; min-height: 100vh; transition: 0.3s; color: var(--text-main); }
         
-        /* Sidebar - ปรับให้รองรับมือถือ */
         .sidebar { width: 260px; background: var(--sidebar); color: #fff; padding: 25px; position: sticky; top: 0; height: 100vh; box-sizing: border-box; flex-shrink: 0; }
         .nav-item { padding: 12px 18px; border-radius: 12px; cursor: pointer; margin-bottom: 8px; color: #cbd5e1; display: flex; align-items: center; gap: 12px; }
         .nav-item.active { background: var(--primary); color: white; }
@@ -27,63 +26,25 @@
         .main-content { flex: 1; padding: 30px; display: flex; flex-direction: column; align-items: center; width: 100%; overflow-x: hidden; }
         .box, .news-card { background: var(--card-bg); border-radius: 16px; width: 100%; max-width: 650px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid var(--border); box-sizing: border-box; position: relative; }
         
-        /* โหมดมือถือ (Mobile) */
-       @media (max-width: 768px) {
-    body { 
-        flex-direction: column; /* เรียงต่อกันบนล่าง */
-        overflow-x: hidden; /* ห้ามเลื่อนซ้ายขวาที่ตัว body */
-    }
-
-    .sidebar { 
-        width: 100vw; /* กว้างเต็มหน้าจอมือถือพอดี */
-        height: auto; 
-        position: sticky; 
-        top: 0; 
-        padding: 10px; 
-        display: flex; 
-        overflow-x: auto; /* เลื่อนเมนูซ้ายขวาได้ */
-        white-space: nowrap; 
-        gap: 8px;
-        background: var(--sidebar); 
-        z-index: 1000;
-        border-radius: 0; /* เอาขอบมนออกเพื่อให้ชิดขอบจอ */
-        box-sizing: border-box;
-    }
-
-    /* ซ่อนแถบเลื่อนเพื่อให้ดูสะอาดแบบในรูป */
-    .sidebar::-webkit-scrollbar { display: none; }
-    .sidebar { -ms-overflow-style: none; scrollbar-width: none; }
-
-    .sidebar h2 { display: none; } /* ซ่อนชื่อใหญ่ในมือถือตามรูป */
-
-    .nav-item { 
-        margin-bottom: 0; 
-        padding: 8px 16px; 
-        font-size: 14px; 
-        flex-shrink: 0; /* ป้องกันปุ่มโดนบีบ */
-        border-radius: 20px;
-    }
-
-    .main-content { 
-        width: 100%; /* กว้างเต็มจอ */
-        padding: 15px; 
-        box-sizing: border-box; /* คำนวณ padding ไม่ให้ล้นจอ */
-        margin: 0;
-    }
-
-    .box, .news-card { 
-        max-width: 100%; /* ให้การ์ดกว้างเต็มพื้นที่มือถือ */
-        margin-left: 0;
-        margin-right: 0;
-    }
-}
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow-x: hidden; }
+            .sidebar { width: 100vw; height: auto; position: sticky; top: 0; padding: 10px; display: flex; overflow-x: auto; white-space: nowrap; gap: 8px; background: var(--sidebar); z-index: 1000; border-radius: 0; box-sizing: border-box; }
+            .sidebar::-webkit-scrollbar { display: none; }
+            .sidebar h2 { display: none; }
+            .nav-item { margin-bottom: 0; padding: 8px 16px; font-size: 14px; flex-shrink: 0; border-radius: 20px; }
+            .main-content { width: 100%; padding: 15px; box-sizing: border-box; margin: 0; }
+            .box, .news-card { max-width: 100%; margin-left: 0; margin-right: 0; }
+        }
 
         .post-img { width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius: 10px; margin: 12px 0; }
         .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; margin-bottom: 8px; display: inline-block; }
+        
+        /* สี Badge */
         .bg-urgent { background: #fff1f0; color: #ff4d4f; border: 1.5px solid #ff4d4f; }
-        .bg-study { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; }
-        .bg-topic { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; }
+        .bg-study { background: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
         .bg-activity { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
+        .bg-love { background: #fff0f6; color: #eb2f96; border: 1px solid #ffadd2; }
+        .bg-vent { background: #fff2e8; color: #fa541c; border: 1px solid #ffbb96; }
         .bg-general { background: #f5f5f5; color: #595959; border: 1px solid #d9d9d9; }
 
         .action-bar { display: flex; gap: 15px; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 5px; }
@@ -97,19 +58,22 @@
 
         input, select, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid var(--border); border-radius: 10px; font-family: 'Kanit'; box-sizing: border-box; background: var(--bg); color: var(--text-main); }
         .btn-post { padding: 10px 25px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 500; }
+        
+        #sub_cat_box { display: none; margin-top: 5px; }
+        .sub-select { border-style: dashed; border-color: var(--primary); }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>SCHOOL BCW Board</h2>
+        <h2>BCW Board</h2>
         <div class="nav-item active" onclick="filterNews('ทั้งหมด', this)"><i class="fas fa-layer-group"></i> ทั้งหมด</div>
-        <div class="nav-item" onclick="filterNews('🚨 ด่วน', this)"><i class="fas fa-exclamation-triangle"></i> ด่วน</div>
+        <div class="nav-item" onclick="filterNews('🚨 ด่วน', this)"><i class="fas fa-exclamation-triangle"></i> ด่วน / สำคัญ</div>
         <div class="nav-item" onclick="filterNews('📚 การเรียน', this)"><i class="fas fa-book"></i> การเรียน</div>
-        <div class="nav-item" onclick="filterNews('📢 ทั่วไป', this)"><i class="fas fa-bullhorn"></i> ทั่วไป</div>
-        <div class="nav-item" onclick="filterNews('📌 สำคัญ', this)"><i class="fas fa-thumbtack"></i> สำคัญ</div>
-        <div class="nav-item" onclick="filterNews('🔥 เปิดประเด็น', this)"><i class="fas fa-fire-alt"></i> เปิดประเด็น</div>
         <div class="nav-item" onclick="filterNews('⚽ กิจกรรม', this)"><i class="fas fa-trophy"></i> กิจกรรม</div>
+        <div class="nav-item" onclick="filterNews('✨ ความรู้สึก', this)"><i class="fas fa-heart"></i> ความรู้สึก / ความสัมพันธ์</div>
+       <div class="nav-item" onclick="filterNews('🗣️ เปิดประเด็น', this)"><i class="fas fa-comments"></i> เปิดประเด็น</div>
+        <div class="nav-item" onclick="filterNews('📢 ทั่วไป', this)"><i class="fas fa-bullhorn"></i> ทั่วไป</div>
         <div class="nav-item" onclick="toggleDarkMode()"><i class="fas fa-adjust"></i> สลับโหมด</div>
     </div>
 
@@ -118,16 +82,23 @@
             <div style="background:var(--primary); color:white; padding:12px 20px; font-weight:500; border-radius:16px 16px 0 0;">กระดานข่าวโรงเรียนบัวเชดวิทยา</div>
             <div style="padding: 15px 20px;">
                 <input type="text" id="author" placeholder="ชื่อเล่น/ชื่อของคุณ...">
-                <div style="display: flex; gap: 8px;">
-                    <select id="category" style="flex: 1;">
-                        <option value="📢 ทั่วไป">📢 ทั่วไป</option>
-                        <option value="🚨 ด่วน">🚨 ด่วน</option>
-                        <option value="📚 การเรียน">📚 การเรียน</option>
-                        <option value="📌 สำคัญ">📌 สำคัญ</option>
-                        <option value="🔥 เปิดประเด็น">🔥 เปิดประเด็น</option>
-                        <option value="⚽ กิจกรรม">⚽ กิจกรรม</option>
-                    </select>
-                    <input type="text" id="title" placeholder="หัวข้อ..." style="flex: 1.5;">
+                <div style="display: flex; flex-direction: column;">
+                    <div style="display: flex; gap: 8px;">
+                        <select id="category" style="flex: 1;" onchange="updateSubCategories(this.value)">
+                            <option value="📢 ทั่วไป">📢 ทั่วไป</option>
+                            <option value="🚨 ด่วน">🚨 ด่วน / สำคัญ</option>
+                            <option value="📚 การเรียน">📚 การเรียน</option>
+                            <option value="⚽ กิจกรรม">⚽ กิจกรรม / กีฬา</option>
+                            <option value="✨ ความรู้สึก">✨ ความรู้สึก / ความสัมพันธ์</option>
+                            <option value="🗣️ เปิดประเด็น">🗣️ เปิดประเด็น</option>
+                        </select>
+                        <input type="text" id="title" placeholder="หัวข้อ..." style="flex: 1.5;">
+                    </div>
+                    <div id="sub_cat_box">
+                        <select id="sub_category" class="sub-select">
+                            <option value="">-- ระบุหัวข้อย่อย --</option>
+                        </select>
+                    </div>
                 </div>
                 <textarea id="content" rows="2" placeholder="เล่าเรื่องที่นี่..."></textarea>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -146,6 +117,28 @@
     let allNews = [];
     let userToken = localStorage.getItem("user_token") || "TK-" + Math.random().toString(36).substr(2, 9);
     localStorage.setItem("user_token", userToken);
+
+    function updateSubCategories(mainCat) {
+        const sub = document.getElementById('sub_category');
+        const box = document.getElementById('sub_cat_box');
+        sub.innerHTML = '<option value="">-- ระบุหัวข้อย่อย --</option>';
+        
+        const opts = {
+            "🚨 ด่วน": ["🔍 ตามหาของ", "📣 ประกาศด่วน", "⚠️ แจ้งเตือนภัย"],
+            "📚 การเรียน": ["✍️ ติวสอบ", "❓ ถามการบ้าน", "📖 แชร์สรุป", "🤝 หาเพื่อนติว"],
+            "⚽ กิจกรรม": ["🎮 เกม", "⚽ กีฬาสี/ชมรม", "🎭 ซ้อมแสดง", "🏆 ผลการแข่งขัน"],
+            "✨ ความรู้สึก": ["💖 ความรัก","😤 ระบาย","🧘 พักใจ","🤝 เพื่อน","😊 ส่งต่อพลังบวก"],
+            "🗣️ เปิดประเด็น": ["❓ ตั้งคำถาม", "📌 ประเด็นฮอตในโรงเรียน","🗳️ โพลล์สำรวจ"],
+            "📢 ทั่วไป": ["📸 บรรยากาศ", "🍱 รีวิวอาหาร", "🔮 ดวง/มู", "💬 ชวนคุย"]
+        };
+
+        if(opts[mainCat]) {
+            opts[mainCat].forEach(t => sub.innerHTML += `<option value="${t}">${t}</option>`);
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
+        }
+    }
 
     function getColorFromName(name) {
         const colors = ['#1877f2', '#f02849', '#2abba7', '#f7b928', '#9360f7', '#ff7e29', '#1098ad'];
@@ -172,11 +165,6 @@
         } catch(e) {}
     }
 
-    function showMoreComments(id) {
-        document.getElementById(`old-comments-${id}`).style.display = 'block';
-        document.getElementById(`view-more-${id}`).style.display = 'none';
-    }
-
     function renderNews(data) {
         let html = '';
         const myName = localStorage.getItem("myName") || "";
@@ -187,10 +175,11 @@
             const limit = 2;
             
             let badgeClass = 'bg-general';
-            if (item.category.includes('ด่วน') || item.category.includes('สำคัญ')) badgeClass = 'bg-urgent';
-            else if (item.category.includes('การเรียน')) badgeClass = 'bg-study';
-            else if (item.category.includes('เปิดประเด็น')) badgeClass = 'bg-topic';
-            else if (item.category.includes('กิจกรรม')) badgeClass = 'bg-activity';
+            if (item.category.includes('🚨')) badgeClass = 'bg-urgent';
+            else if (item.category.includes('📚')) badgeClass = 'bg-study';
+            else if (item.category.includes('⚽')) badgeClass = 'bg-activity';
+            if (item.category.includes('✨')) badgeClass = 'bg-love'; 
+            else if (item.category.includes('🗣️')) badgeClass = 'bg-topic'; 
 
             html += `
             <div class="news-card">
@@ -201,29 +190,15 @@
                     <p style="white-space: pre-wrap; font-size: 0.95rem; margin-bottom: 12px;">${item.content}</p>
                     ${item.image ? `<img src="${item.image}" class="post-img">` : ''}
                     <div style="font-size: 12px; color: var(--text-sub); margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-    <span>โดย <b>${item.author}</b></span>
-    <span style="opacity: 0.7; font-size: 11px;">
-        <i class="far fa-clock"></i> 
-        ${item.date ? new Date(item.date).toLocaleString('th-TH', {hour:'2-digit', minute:'2-digit', day:'2-digit', month:'short'}) : 'ไม่มีเวลา'}
-    </span>
-</div>
-                    <div class="action-bar">
-                        <button class="action-btn ${isLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)">
-                            <i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})
-                        </button>
-                        <button class="action-btn" onclick="document.getElementById('input-${id}').focus()">
-                            <i class="fas fa-comment"></i> ตอบกลับ (${comments.length})
-                        </button>
+                        <span>โดย <b>${item.author}</b></span>
+                        <span style="opacity: 0.7; font-size: 11px;"><i class="far fa-clock"></i> ${item.date ? new Date(item.date).toLocaleString('th-TH') : ''}</span>
                     </div>
-
+                    <div class="action-bar">
+                        <button class="action-btn ${isLiked}" onclick="likePost('${item.title.replace(/'/g, "\\'")}', this)"><i class="fas fa-heart"></i> ถูกใจ (${item.likes || 0})</button>
+                        <button class="action-btn" onclick="document.getElementById('input-${id}').focus()"><i class="fas fa-comment"></i> ตอบกลับ (${comments.length})</button>
+                    </div>
                     <div class="comment-section">
                         <div id="comments-container-${id}">
-                            ${comments.length > limit ? `
-                                <div id="view-more-${id}" onclick="showMoreComments('${id}')" style="color:var(--primary); font-size:13px; cursor:pointer; margin-bottom:10px;">ดูคอมเมนต์ก่อนหน้า...</div>
-                                <div id="old-comments-${id}" style="display: none;">
-                                    ${comments.slice(0, -limit).map(c => renderCommentRow(c)).join('')}
-                                </div>
-                            ` : ''}
                             ${comments.slice(-limit).map(c => renderCommentRow(c)).join('')}
                         </div>
                         <div style="display:flex; gap:8px; margin-top:10px;">
@@ -240,11 +215,7 @@
 
     function renderCommentRow(c) {
         const color = getColorFromName(c.commenter);
-        return `
-            <div class="comment-bubble">
-                <div style="background:${color}; color:white; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; flex-shrink:0;">${c.commenter.charAt(0)}</div>
-                <div class="bubble-text"><b style="color:${color};">${c.commenter}</b>: ${c.text}</div>
-            </div>`;
+        return `<div class="comment-bubble"><div style="background:${color}; color:white; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; flex-shrink:0;">${c.commenter.charAt(0)}</div><div class="bubble-text"><b style="color:${color};">${c.commenter}</b>: ${c.text}</div></div>`;
     }
 
     async function sendPost() {
@@ -252,9 +223,14 @@
         const title = document.getElementById('title').value.trim();
         const content = document.getElementById('content').value;
         const category = document.getElementById('category').value;
+        const subCat = document.getElementById('sub_category').value;
         const file = document.getElementById('fileInput').files[0];
+
         if(!author || !title) return Swal.fire('ข้อมูลไม่ครบ', '', 'warning');
+        
+        // --- อนิเมชัน Loading (คงเดิม) ---
         Swal.fire({ title: 'กำลังโพสต์...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+        
         let imgUrl = "";
         if (file) {
             const fd = new FormData(); fd.append("image", file);
@@ -262,51 +238,49 @@
             const json = await res.json();
             if(json.success) imgUrl = json.data.url;
         }
-        await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, category, imageLink: imgUrl, token: userToken }) });
+
+        const finalCategory = subCat ? `${category} | ${subCat}` : category;
+        await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, category: finalCategory, imageLink: imgUrl, token: userToken }) });
+        
         localStorage.setItem("myName", author);
+        // --- อนิเมชัน Success (คงเดิม) ---
         Swal.fire({ icon: 'success', title: 'โพสต์แล้ว!', showConfirmButton: false, timer: 1500 }).then(() => location.reload());
     }
 
     async function deletePost(title) {
-    const res = await Swal.fire({
-        title: 'ยืนยันการลบโพสต์?',
-        text: "เมื่อลบแล้วข้อมูลจะหายไปถาวร",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33', // สีแดงปุ่มลบ
-        cancelButtonColor: '#6e7881',
-        confirmButtonText: '<i class="fas fa-trash-alt"></i> ยืนยันลบ',
-        cancelButtonText: 'ยกเลิก',
-        reverseButtons: true,
-        background: document.body.classList.contains('dark-mode') ? '#1e293b' : '#fff',
-        color: document.body.classList.contains('dark-mode') ? '#f1f5f9' : '#1c1e21'
-    });
-
-    if (res.isConfirmed) {
-        Swal.fire({ 
-            title: 'กำลังลบ...', 
-            allowOutsideClick: false, 
-            didOpen: () => Swal.showLoading() 
+        const res = await Swal.fire({
+            title: 'ยืนยันการลบโพสต์?',
+            text: "เมื่อลบแล้วข้อมูลจะหายไปถาวร",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6e7881',
+            confirmButtonText: '<i class="fas fa-trash-alt"></i> ยืนยันลบ',
+            cancelButtonText: 'ยกเลิก',
+            reverseButtons: true,
+            background: document.body.classList.contains('dark-mode') ? '#1e293b' : '#fff',
+            color: document.body.classList.contains('dark-mode') ? '#f1f5f9' : '#1c1e21'
         });
-        
-        try {
-            const resp = await fetch(scriptUrl, { 
-                method: 'POST', 
-                body: JSON.stringify({ action: 'delete', title, token: userToken }) 
-            });
-            const result = await resp.text();
+
+        if (res.isConfirmed) {
+            // --- อนิเมชัน Loading ตอนลบ (คงเดิม) ---
+            Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             
-            if (result === "Success") {
-                Swal.fire({ icon: 'success', title: 'ลบสำเร็จ', showConfirmButton: false, timer: 1000 })
-                .then(() => location.reload());
-            } else {
-                Swal.fire('ขออภัย!', 'คุณไม่ใช่เจ้าของโพสต์นี้ จึงไม่สามารถลบได้', 'error');
+            try {
+                const resp = await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, token: userToken }) });
+                const result = await resp.text();
+                
+                if (result === "Success") {
+                    // --- อนิเมชัน Success ตอนลบ (คงเดิม) ---
+                    Swal.fire({ icon: 'success', title: 'ลบสำเร็จ', showConfirmButton: false, timer: 1000 }).then(() => location.reload());
+                } else {
+                    Swal.fire('ขออภัย!', 'คุณไม่ใช่เจ้าของโพสต์นี้ จึงไม่สามารถลบได้', 'error');
+                }
+            } catch(e) {
+                Swal.fire('ผิดพลาด', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'error');
             }
-        } catch(e) {
-            Swal.fire('ผิดพลาด', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'error');
         }
     }
-}
 
     async function likePost(title, btn) {
         if (localStorage.getItem("liked_" + title)) return;
@@ -316,63 +290,37 @@
         loadNews();
     }
 
-    async function sendCommentNew(title, id, btn) { // เพิ่ม btn เข้ามาในพารามิเตอร์
-    const commenter = document.getElementById(`name-${id}`).value.trim() || "คนบัวเชด";
-    const textInput = document.getElementById(`input-${id}`);
-    const text = textInput.value.trim();
+    async function sendCommentNew(title, id, btn) {
+        const commenter = document.getElementById(`name-${id}`).value.trim() || "คนบัวเชด";
+        const textInput = document.getElementById(`input-${id}`);
+        const text = textInput.value.trim();
+        if(!text || btn.disabled) return;
 
-    if(!text || btn.disabled) return; // ถ้าไม่มีข้อความ หรือปุ่มถูกล็อกอยู่ ให้หยุดทำงานทันที
+        btn.disabled = true;
+        const originalContent = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>'; 
 
-    // 1. ล็อกปุ่มทันที และเปลี่ยนไอคอนเป็นหมุนๆ
-    btn.disabled = true;
-    btn.style.cursor = "not-allowed";
-    btn.style.opacity = "0.6";
-    const originalContent = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>'; 
-
-    try {
-        localStorage.setItem("myName", commenter);
-        
-        // 2. ส่งข้อมูลไปที่ Google Sheets
-        const resp = await fetch(scriptUrl, { 
-            method: 'POST', 
-            body: JSON.stringify({ action: 'comment', title, commenter, text }) 
-        });
-
-        if(resp.ok) {
-            textInput.value = ''; // ล้างช่องพิมพ์ทันทีเมื่อส่งสำเร็จ
-            await loadNews(); // โหลดข้อมูลใหม่
+        try {
+            localStorage.setItem("myName", commenter);
+            await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'comment', title, commenter, text }) });
+            textInput.value = '';
+            await loadNews();
+        } catch (e) {
+            Swal.fire('ขออภัย', 'ส่งไม่สำเร็จ ลองใหม่อีกครั้งนะครับ', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalContent;
         }
-    } catch (e) {
-        Swal.fire('ขออภัย', 'ส่งไม่สำเร็จ ลองใหม่อีกครั้งนะครับ', 'error');
-    } finally {
-        // 3. ปลดล็อกปุ่มให้กลับมาใช้งานได้
-        btn.disabled = false;
-        btn.style.cursor = "pointer";
-        btn.style.opacity = "1";
-        btn.innerHTML = originalContent;
     }
-}
 
-    // --- เพิ่มฟังก์ชันนี้ลงไปเพื่อให้เมนูฝั่งซ้ายใช้งานได้ ---
-function filterNews(category, element) {
-    console.log("กำลังกรองหมวดหมู่:", category);
-    
-    // 1. เปลี่ยนสถานะปุ่ม Active ให้ดูว่าเลือกอันไหนอยู่
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    if (element) element.classList.add('active');
+    function filterNews(category, element) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        if (element) element.classList.add('active');
+        if (category === 'ทั้งหมด') renderNews(allNews);
+        else renderNews(allNews.filter(item => item.category.includes(category)));
+    }
 
-    // 2. กรองข้อมูล
-    if (category === 'ทั้งหมด') {
-        renderNews(allNews);
-    } else {
-        const filtered = allNews.filter(item => item.category === category);
-        renderNews(filtered);
-     }
-  }
-
-
-                          window.onload = initApp;
-      </script>
-    </body>
+    window.onload = initApp;
+    </script>
+</body>
 </html>
