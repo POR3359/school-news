@@ -39,7 +39,6 @@
         .post-img { width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius: 10px; margin: 12px 0; }
         .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; margin-bottom: 8px; display: inline-block; }
         
-        /* สี Badge */
         .bg-urgent { background: #fff1f0; color: #ff4d4f; border: 1.5px solid #ff4d4f; }
         .bg-study { background: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
         .bg-activity { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
@@ -63,7 +62,7 @@
         #sub_cat_box { display: none; margin-top: 5px; }
         .sub-select { border-style: dashed; border-color: var(--primary); }
 
-        /* ส่วน UI ย่อ/ขยาย และ Welcome Box */
+        /* UI ย่อ/ขยาย */
         .welcome-box {
             background: linear-gradient(135deg, #1877f2 0%, #0052cc 100%);
             color: white; border: none; transition: all 0.3s ease;
@@ -73,23 +72,15 @@
             border: 1px solid var(--border);
         }
         .welcome-content { padding: 25px; }
-        
         .box-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .toggle-icon { transition: transform 0.3s ease; opacity: 0.8; }
-        
-        /* สไตล์ตอนกดย่อกล่อง */
         .is-collapsed .box-body, .is-collapsed .guide-body { display: none; }
         .is-collapsed .toggle-icon { transform: rotate(-180deg); }
         .is-collapsed { margin-bottom: 10px; }
 
-        .how-to-card { border-left: 5px solid #ff9800; transition: all 0.3s ease; }
-        .guide-steps { margin-top: 15px; }
-        .step { 
-            display: flex; align-items: center; gap: 15px; margin-bottom: 12px; padding: 10px;
-            background: rgba(0,0,0,0.02); border-radius: 8px;
-        }
+        .how-to-card { border-left: 5px solid #ff9800; }
+        .step { display: flex; align-items: center; gap: 15px; margin-bottom: 12px; padding: 10px; background: rgba(0,0,0,0.02); border-radius: 8px; }
         .step i { color: #1877f2; font-size: 1.2rem; width: 25px; text-align: center; }
-        .step span { font-size: 0.9rem; }
         body.dark-mode .step { background: rgba(255,255,255,0.05); }
     </style>
 </head>
@@ -102,7 +93,7 @@
         <div class="nav-item" onclick="filterNews('📚 การเรียน', this)"><i class="fas fa-book"></i> การเรียน</div>
         <div class="nav-item" onclick="filterNews('⚽ กิจกรรม', this)"><i class="fas fa-trophy"></i> กิจกรรม</div>
         <div class="nav-item" onclick="filterNews('✨ ความรู้สึก', this)"><i class="fas fa-heart"></i> ความรู้สึก / ความสัมพันธ์</div>
-       <div class="nav-item" onclick="filterNews('🗣️ เปิดประเด็น', this)"><i class="fas fa-comments"></i> เปิดประเด็น</div>
+        <div class="nav-item" onclick="filterNews('🗣️ เปิดประเด็น', this)"><i class="fas fa-comments"></i> เปิดประเด็น</div>
         <div class="nav-item" onclick="filterNews('📢 ทั่วไป', this)"><i class="fas fa-bullhorn"></i> ทั่วไป</div>
         <div class="nav-item" onclick="toggleDarkMode()"><i class="fas fa-adjust"></i> สลับโหมด</div>
     </div>
@@ -146,7 +137,7 @@
                     <i class="fas fa-chevron-up toggle-icon"></i>
                 </div>
                 <div class="box-body" style="margin-top: 15px;">
-                    <p>"เว็บบอร์ดนี้คือพื้นที่ของพวกเรา เว็บบอร์ดถูกสร้างขึ้นมาเพื่อให้เป็นพื้นที่รวบรวมความทรงจำและข่าวสารภายในโรงเรียน ไม่ว่าจะเป็นเรื่องเรียน เรื่องเล่น หรือเรื่องราวประทับใจ แวะมาอัปเดตและพูดคุยกันได้เสมอ เพราะที่นี่คือพื้นที่ที่สร้างขึ้น <b>เพื่อนักเรียนทุกคน</b>"</p>
+                    <p>"เว็บบอร์ดนี้คือพื้นที่ของพวกเรา เว็บบอร์ดนี้ถูกสร้างขึ้นมาเพื่อให้เป็นพื้นที่รวบรวมความทรงจำและข่าวสารภายในโรงเรียน ไม่ว่าจะเป็นเรื่องเรียน เรื่องเล่น หรือเรื่องราวประทับใจ แวะมาอัปเดตและพูดคุยกันได้เสมอ เพราะที่นี่คือพื้นที่ที่สร้างขึ้น <b>เพื่อนักเรียนทุกคน</b>"</p>
                 </div>
             </div>
         </div>
@@ -158,21 +149,10 @@
                     <i class="fas fa-chevron-up toggle-icon"></i>
                 </div>
                 <div class="guide-body">
-                    <h3 style="margin: 15px 0 10px 0;">เริ่มต้นใช้งาน BCW Board ยังไงดี? 🤔</h3>
-                    <div class="guide-steps">
-                        <div class="step">
-                            <i class="fas fa-edit"></i>
-                            <span><b>เขียนโพสต์:</b> ใส่ชื่อ หัวข้อ และเลือกหมวดหมู่ให้ตรงกับเรื่องที่จะเล่า</span>
-                        </div>
-                        <div class="step">
-                            <i class="fas fa-filter"></i>
-                            <span><b>เลือกดูหมวดหมู่:</b> ใช้เมนูฝั่งซ้ายเพื่อกรองดูเฉพาะเรื่องที่สนใจ</span>
-                        </div>
-                        <div class="step">
-                            <i class="fas fa-heart"></i>
-                            <span><b>ส่งต่อพลังบวก:</b> กดถูกใจ หรือคอมเมนต์พูดคุยกับเพื่อนๆ อย่างสุภาพนะ</span>
-                        </div>
-                    </div>
+                    <h3 style="margin: 15px 0 10px 0;">เริ่มต้นใช้งานยังไงดี? 🤔</h3>
+                    <div class="step"><i class="fas fa-edit"></i><span><b>เขียนโพสต์:</b> ใส่ชื่อ หัวข้อ และเลือกหมวดหมู่</span></div>
+                    <div class="step"><i class="fas fa-filter"></i><span><b>เลือกดูหมวดหมู่:</b> ใช้เมนูฝั่งซ้ายเพื่อกรองดูเรื่องที่สนใจ</span></div>
+                    <div class="step"><i class="fas fa-heart"></i><span><b>ส่งต่อพลังบวก:</b> กดถูกใจ หรือคอมเมนต์คุยกับเพื่อนๆ</span></div>
                 </div>
             </div>
         </div>
@@ -187,19 +167,15 @@
     let userToken = localStorage.getItem("user_token") || "TK-" + Math.random().toString(36).substr(2, 9);
     localStorage.setItem("user_token", userToken);
 
-    // ฟังก์ชัน ย่อ-ขยาย กล่อง
     function toggleBox(id) {
         const el = document.getElementById(id);
         const isCollapsed = el.classList.toggle('is-collapsed');
         localStorage.setItem('collapsed_' + id, isCollapsed);
     }
 
-    // เช็คสถานะการย่อกล่องตอนโหลด
     function checkBoxesStatus() {
         ['welcomeBox', 'guideBox'].forEach(id => {
-            if (localStorage.getItem('collapsed_' + id) === 'true') {
-                document.getElementById(id).classList.add('is-collapsed');
-            }
+            if (localStorage.getItem('collapsed_' + id) === 'true') document.getElementById(id).classList.add('is-collapsed');
         });
     }
 
@@ -207,7 +183,6 @@
         const sub = document.getElementById('sub_category');
         const box = document.getElementById('sub_cat_box');
         sub.innerHTML = '<option value="">-- ระบุหัวข้อย่อย --</option>';
-        
         const opts = {
             "🚨 ด่วน": ["🔍 ตามหาของ", "📣 ประกาศด่วน", "⚠️ แจ้งเตือนภัย"],
             "📚 การเรียน": ["✍️ ติวสอบ", "❓ ถามการบ้าน", "📖 แชร์สรุป", "🤝 หาเพื่อนติว"],
@@ -216,13 +191,10 @@
             "🗣️ เปิดประเด็น": ["❓ ตั้งคำถาม", "📌 ประเด็นฮอตในโรงเรียน","🗳️ โพลล์สำรวจ"],
             "📢 ทั่วไป": ["📸 บรรยากาศ", "🍱 รีวิวอาหาร", "🔮 ดวง/มู", "💬 ชวนคุย"]
         };
-
         if(opts[mainCat]) {
             opts[mainCat].forEach(t => sub.innerHTML += `<option value="${t}">${t}</option>`);
             box.style.display = 'block';
-        } else {
-            box.style.display = 'none';
-        }
+        } else { box.style.display = 'none'; }
     }
 
     function getColorFromName(name) {
@@ -254,11 +226,14 @@
     function renderNews(data) {
         let html = '';
         const myName = localStorage.getItem("myName") || "";
-        [...data].reverse().forEach((item, index) => {
+        const reversedData = [...data].reverse();
+        reversedData.forEach((item, index) => {
             const id = `post-${index}`;
             const comments = item.comments || [];
             const isLiked = localStorage.getItem("liked_" + item.title) ? 'liked' : '';
             const limit = 2;
+            const hasMore = comments.length > limit;
+            const visibleComments = comments.slice(-limit);
             
             let badgeClass = 'bg-general';
             if (item.category.includes('🚨')) badgeClass = 'bg-urgent';
@@ -284,9 +259,8 @@
                         <button class="action-btn" onclick="document.getElementById('input-${id}').focus()"><i class="fas fa-comment"></i> ตอบกลับ (${comments.length})</button>
                     </div>
                     <div class="comment-section">
-                        <div id="comments-container-${id}">
-                            ${comments.slice(-limit).map(c => renderCommentRow(c)).join('')}
-                        </div>
+                        ${hasMore ? `<div style="font-size: 12px; color: var(--primary); cursor: pointer; margin-bottom: 8px; font-weight: 500;" onclick="showAllComments('${id}', ${index})">ดูคอมเมนต์ก่อนหน้า...</div>` : ''}
+                        <div id="comments-container-${id}">${visibleComments.map(c => renderCommentRow(c)).join('')}</div>
                         <div style="display:flex; gap:8px; margin-top:10px;">
                             <input type="text" id="name-${id}" value="${myName}" style="width:70px; margin:0; padding:8px;" placeholder="ชื่อ">
                             <input type="text" id="input-${id}" style="margin:0; padding:8px;" placeholder="ตอบกลับ...">
@@ -297,6 +271,12 @@
             </div>`;
         });
         document.getElementById('news-container').innerHTML = html || "ไม่มีข่าว";
+    }
+
+    function showAllComments(id, index) {
+        const comments = [...allNews].reverse()[index].comments;
+        document.getElementById(`comments-container-${id}`).innerHTML = comments.map(c => renderCommentRow(c)).join('');
+        event.target.style.display = 'none';
     }
 
     function renderCommentRow(c) {
@@ -311,10 +291,8 @@
         const category = document.getElementById('category').value;
         const subCat = document.getElementById('sub_category').value;
         const file = document.getElementById('fileInput').files[0];
-
         if(!author || !title) return Swal.fire('ข้อมูลไม่ครบ', '', 'warning');
         Swal.fire({ title: 'กำลังโพสต์...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-        
         let imgUrl = "";
         if (file) {
             const fd = new FormData(); fd.append("image", file);
@@ -322,49 +300,27 @@
             const json = await res.json();
             if(json.success) imgUrl = json.data.url;
         }
-
         const finalCategory = subCat ? `${category} | ${subCat}` : category;
         await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'add', author, title, content, category: finalCategory, imageLink: imgUrl, token: userToken }) });
-        
         localStorage.setItem("myName", author);
         Swal.fire({ icon: 'success', title: 'โพสต์แล้ว!', showConfirmButton: false, timer: 1500 }).then(() => location.reload());
     }
 
     async function deletePost(title) {
         const res = await Swal.fire({
-            title: 'ยืนยันการลบโพสต์?',
-            text: "เมื่อลบแล้วข้อมูลจะหายไปถาวร",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6e7881',
-            confirmButtonText: '<i class="fas fa-trash-alt"></i> ยืนยันลบ',
-            cancelButtonText: 'ยกเลิก',
-            reverseButtons: true,
-            background: document.body.classList.contains('dark-mode') ? '#1e293b' : '#fff',
-            color: document.body.classList.contains('dark-mode') ? '#f1f5f9' : '#1c1e21'
+            title: 'ยืนยันการลบโพสต์?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'ยืนยันลบ', cancelButtonText: 'ยกเลิก', reverseButtons: true
         });
-
         if (res.isConfirmed) {
             Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            try {
-                const resp = await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, token: userToken }) });
-                const result = await resp.text();
-                if (result === "Success") {
-                    Swal.fire({ icon: 'success', title: 'ลบสำเร็จ', showConfirmButton: false, timer: 1000 }).then(() => location.reload());
-                } else {
-                    Swal.fire('ขออภัย!', 'คุณไม่ใช่เจ้าของโพสต์นี้ จึงไม่สามารถลบได้', 'error');
-                }
-            } catch(e) {
-                Swal.fire('ผิดพลาด', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'error');
-            }
+            const resp = await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'delete', title, token: userToken }) });
+            if (await resp.text() === "Success") Swal.fire({ icon: 'success', title: 'ลบสำเร็จ', showConfirmButton: false, timer: 1000 }).then(() => location.reload());
+            else Swal.fire('ขออภัย!', 'คุณไม่ใช่เจ้าของโพสต์นี้', 'error');
         }
     }
 
     async function likePost(title, btn) {
         if (localStorage.getItem("liked_" + title)) return;
-        btn.classList.add('liked');
-        localStorage.setItem("liked_" + title, "true");
+        btn.classList.add('liked'); localStorage.setItem("liked_" + title, "true");
         await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'like', title }) });
         loadNews();
     }
@@ -374,29 +330,21 @@
         const textInput = document.getElementById(`input-${id}`);
         const text = textInput.value.trim();
         if(!text || btn.disabled) return;
-        btn.disabled = true;
-        const originalContent = btn.innerHTML;
+        btn.disabled = true; const originalContent = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>'; 
         try {
             localStorage.setItem("myName", commenter);
             await fetch(scriptUrl, { method: 'POST', body: JSON.stringify({ action: 'comment', title, commenter, text }) });
-            textInput.value = '';
-            await loadNews();
-        } catch (e) {
-            Swal.fire('ขออภัย', 'ส่งไม่สำเร็จ ลองใหม่อีกครั้งนะครับ', 'error');
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = originalContent;
-        }
+            textInput.value = ''; await loadNews();
+        } catch (e) { Swal.fire('ขออภัย', 'ส่งไม่สำเร็จ', 'error'); } 
+        finally { btn.disabled = false; btn.innerHTML = originalContent; }
     }
 
     function filterNews(category, element) {
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         if (element) element.classList.add('active');
-        if (category === 'ทั้งหมด') renderNews(allNews);
-        else renderNews(allNews.filter(item => item.category.includes(category)));
+        renderNews(category === 'ทั้งหมด' ? allNews : allNews.filter(item => item.category.includes(category)));
     }
-
     window.onload = initApp;
     </script>
 </body>
